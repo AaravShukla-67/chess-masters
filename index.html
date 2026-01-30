@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>♟️ Chess Masters - Complete Edition</title>
+    <title>♟️ Chess Masters - Professional Edition</title>
     <style>
         * {
             margin: 0;
@@ -12,10 +12,38 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             overflow-x: hidden;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(102, 126, 234, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.8); }
+        }
+
+        @keyframes ratingPop {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         /* Login Screen */
@@ -34,6 +62,7 @@
             max-width: 450px;
             width: 100%;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.5s ease;
         }
 
         .login-header {
@@ -65,6 +94,10 @@
             transition: all 0.3s;
         }
 
+        .tab-btn:hover {
+            background: #e0e0e0;
+        }
+
         .tab-btn.active {
             background: #667eea;
             color: white;
@@ -87,6 +120,7 @@
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 16px;
+            transition: border 0.3s;
         }
 
         .form-group input:focus {
@@ -112,6 +146,8 @@
 
         .btn-primary:hover {
             background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
         .btn-secondary {
@@ -119,6 +155,10 @@
             color: #667eea;
             border: 2px solid #667eea;
             margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f0ff;
         }
 
         /* Home Dashboard */
@@ -136,6 +176,7 @@
             padding: 25px;
             margin-bottom: 30px;
             color: white;
+            animation: slideIn 0.5s ease;
         }
 
         .user-info-top {
@@ -183,6 +224,13 @@
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            animation: slideIn 0.6s ease;
+        }
+
+        .rating-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
 
         .rating-type {
@@ -197,34 +245,378 @@
             color: #667eea;
         }
 
+        .rating-change {
+            font-size: 14px;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+
+        .rating-change.positive {
+            color: #4CAF50;
+        }
+
+        .rating-change.negative {
+            color: #f44336;
+        }
+
         .main-menu {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
             margin-bottom: 30px;
         }
 
         .menu-card {
             background: white;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
+            padding: 25px 30px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.7s ease;
         }
 
         .menu-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #f8f8f8, #ffffff);
         }
 
         .menu-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
+            font-size: 40px;
+            min-width: 50px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .menu-card:hover .menu-icon {
+            transform: scale(1.15);
+        }
+
+        .menu-content {
+            flex: 1;
+            text-align: left;
         }
 
         .menu-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .menu-subtitle {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .streak-badge {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+            animation: slideIn 0.4s ease;
+        }
+
+        .streak-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .streak-icon {
+            font-size: 36px;
+        }
+
+        .streak-text h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .streak-text p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .streak-number {
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        /* Friends System */
+        .friends-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .friends-modal.show {
+            display: flex;
+        }
+
+        .friends-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.3s ease;
+        }
+
+        .friends-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .search-bar button {
+            padding: 12px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .search-bar button:hover {
+            background: #5568d3;
+        }
+
+        .friends-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .friend-tab {
+            flex: 1;
+            padding: 10px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .friend-tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .friends-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .friend-card {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .friend-card:hover {
+            background: #e8e8e8;
+            transform: translateX(5px);
+        }
+
+        .friend-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .friend-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .friend-details h4 {
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .friend-details p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .friend-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .friend-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-accept {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-decline {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-view {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-remove {
+            background: #999;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* Profile Modal */
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .profile-modal.show {
+            display: flex;
+        }
+
+        .profile-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.3s ease;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin: 0 auto 15px;
+            color: white;
+        }
+
+        .profile-section {
+            margin-bottom: 25px;
+        }
+
+        .profile-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .profile-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .profile-stat-item {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .profile-stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .profile-stat-value {
             font-size: 24px;
             font-weight: bold;
             color: #333;
@@ -238,11 +630,12 @@
             padding: 30px;
             margin-bottom: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.5s ease;
         }
 
         .bot-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 15px;
             max-height: 500px;
             overflow-y: auto;
@@ -250,28 +643,57 @@
 
         .bot-card {
             padding: 20px;
-            background: #f8f8f8;
+            background: linear-gradient(135deg, #f8f8f8, #ffffff);
             border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bot-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .bot-card:hover::before {
+            left: 100%;
         }
 
         .bot-card:hover {
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
         }
 
         .bot-name {
             font-size: 18px;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .bot-rating {
             font-size: 14px;
             opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .bot-strength {
+            font-size: 12px;
+            padding: 4px 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 5px;
         }
 
         /* Game Screen */
@@ -303,6 +725,12 @@
             background: #f8f8f8;
             border-radius: 10px;
             margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .player-bar.active {
+            background: #e8f5e9;
+            animation: glow 2s infinite;
         }
 
         .player-name {
@@ -317,6 +745,7 @@
             padding: 10px 20px;
             background: rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            transition: all 0.3s;
         }
 
         .clock.active {
@@ -325,9 +754,10 @@
             animation: pulse 1s infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
+        .clock.low-time {
+            background: #f44336;
+            color: white;
+            animation: pulse 0.5s infinite;
         }
 
         .chess-board {
@@ -352,14 +782,20 @@
             cursor: pointer;
             user-select: none;
             position: relative;
+            transition: all 0.2s;
         }
 
         .square.light { background: #f0d9b5; }
         .square.dark { background: #b58863; }
 
+        .square:hover {
+            filter: brightness(0.95);
+        }
+
         .square.selected {
             background: #baca44 !important;
             box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+            animation: pulse 0.5s;
         }
 
         .square.legal-move::after {
@@ -368,14 +804,15 @@
             width: 22px;
             height: 22px;
             border-radius: 50%;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.15);
+            animation: fadeIn 0.2s;
         }
 
         .square.legal-move.capture::after {
             width: 100%;
             height: 100%;
             border-radius: 0;
-            border: 4px solid rgba(255, 0, 0, 0.5);
+            border: 4px solid rgba(255, 0, 0, 0.4);
             background: transparent;
         }
 
@@ -391,6 +828,31 @@
         @keyframes check-pulse {
             from { opacity: 0.6; }
             to { opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .piece {
+            transition: transform 0.1s;
+            animation: pieceAppear 0.3s ease;
+        }
+
+        .piece.moving {
+            animation: pieceMove 0.3s ease;
+        }
+
+        @keyframes pieceAppear {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        @keyframes pieceMove {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
         }
 
         .side-panel {
@@ -421,6 +883,11 @@
             border-radius: 8px;
             margin-bottom: 8px;
             font-family: 'Courier New', monospace;
+            transition: background 0.2s;
+        }
+
+        .move-pair:hover {
+            background: #e8e8e8;
         }
 
         .game-controls {
@@ -437,6 +904,11 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .btn-resign {
@@ -474,6 +946,7 @@
 
         .modal.show {
             display: flex;
+            animation: fadeIn 0.3s;
         }
 
         .modal-content {
@@ -483,6 +956,7 @@
             text-align: center;
             max-width: 500px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.3s;
         }
 
         .modal-content h2 {
@@ -508,7 +982,7 @@
 
         .promo-piece:hover {
             background: #f0f0f0;
-            transform: scale(1.1);
+            transform: scale(1.15);
         }
 
         .back-btn {
@@ -519,10 +993,12 @@
             cursor: pointer;
             margin-bottom: 20px;
             font-size: 16px;
+            transition: all 0.3s;
         }
 
         .back-btn:hover {
             background: #e0e0e0;
+            transform: translateX(-3px);
         }
 
         /* Stats Display */
@@ -538,6 +1014,13 @@
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            animation: slideIn 0.8s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
         .stat-number {
@@ -551,6 +1034,46 @@
             display: none !important;
         }
 
+        /* XP Progress Bar */
+        .xp-progress {
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            height: 10px;
+        }
+
+        .xp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        /* Rating Change Popup */
+        .rating-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px 50px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            font-size: 48px;
+            font-weight: bold;
+            z-index: 2000;
+            animation: ratingPop 0.5s ease;
+        }
+
+        .rating-popup.positive {
+            color: #4CAF50;
+        }
+
+        .rating-popup.negative {
+            color: #f44336;
+        }
+
         @media (max-width: 768px) {
             .board-grid {
                 grid-template-columns: repeat(8, 45px);
@@ -561,7 +1084,7 @@
                 height: 45px;
                 font-size: 35px;
             }
-            .ratings-bar, .main-menu {
+            .ratings-bar {
                 grid-template-columns: 1fr;
             }
             .game-layout {
@@ -569,6 +1092,9 @@
             }
             .side-panel {
                 width: 100%;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -579,7 +1105,7 @@
         <div class="login-box">
             <div class="login-header">
                 <h1>♟️ Chess Masters</h1>
-                <p>Play Chess Online - Free Forever</p>
+                <p>Professional Chess Platform</p>
             </div>
             
             <div class="login-tabs">
@@ -622,6 +1148,10 @@
                 <div>
                     <div class="username-display" id="usernameDisplay"></div>
                     <div style="margin-top: 10px; font-size: 14px;" id="userIdDisplay"></div>
+                    <div class="xp-progress">
+                        <div class="xp-fill" id="xpBar" style="width: 0%"></div>
+                    </div>
+                    <div style="margin-top: 5px; font-size: 12px; opacity: 0.8;" id="xpText"></div>
                 </div>
                 <div class="user-stats">
                     <div class="stat">
@@ -644,40 +1174,72 @@
             <div class="rating-card">
                 <div class="rating-type">⚡ Bullet</div>
                 <div class="rating-value" id="bulletRating">1200</div>
+                <div class="rating-change" id="bulletChange"></div>
             </div>
             <div class="rating-card">
                 <div class="rating-type">🔥 Blitz</div>
                 <div class="rating-value" id="blitzRating">1200</div>
+                <div class="rating-change" id="blitzChange"></div>
             </div>
             <div class="rating-card">
                 <div class="rating-type">🐢 Rapid</div>
                 <div class="rating-value" id="rapidRating">1200</div>
+                <div class="rating-change" id="rapidChange"></div>
             </div>
+        </div>
+
+        <div class="streak-badge" id="streakBadge">
+            <div class="streak-info">
+                <div class="streak-icon">🔥</div>
+                <div class="streak-text">
+                    <h3>Daily Streak</h3>
+                    <p id="streakMessage">Keep logging in daily!</p>
+                </div>
+            </div>
+            <div class="streak-number" id="streakNumber">0</div>
         </div>
 
         <div class="main-menu" id="mainMenu">
             <div class="menu-card" onclick="showBotSelection()">
                 <div class="menu-icon">🤖</div>
-                <div class="menu-title">Play Bots</div>
+                <div class="menu-content">
+                    <div class="menu-title">Play Bots</div>
+                    <div class="menu-subtitle">Challenge AI opponents • 12 difficulty levels</div>
+                </div>
             </div>
-            <div class="menu-card" onclick="alert('Multiplayer: Open this file on 2 devices on same network!')">
-                <div class="menu-icon">🌍</div>
-                <div class="menu-title">Play Online</div>
-                <div style="font-size: 12px; margin-top: 10px; opacity: 0.7;">(Local multiplayer)</div>
+            <div class="menu-card" onclick="showFriends()">
+                <div class="menu-icon">👥</div>
+                <div class="menu-content">
+                    <div class="menu-title">Friends</div>
+                    <div class="menu-subtitle">Add friends • View stats • Send requests</div>
+                </div>
             </div>
             <div class="menu-card" onclick="showProfile()">
                 <div class="menu-icon">👤</div>
-                <div class="menu-title">Profile</div>
+                <div class="menu-content">
+                    <div class="menu-title">Profile</div>
+                    <div class="menu-subtitle">View your complete statistics</div>
+                </div>
+            </div>
+            <div class="menu-card" onclick="showAchievements()">
+                <div class="menu-icon">🏆</div>
+                <div class="menu-content">
+                    <div class="menu-title">Achievements</div>
+                    <div class="menu-subtitle">Track your progress and milestones</div>
+                </div>
             </div>
             <div class="menu-card" onclick="logout()">
                 <div class="menu-icon">🚪</div>
-                <div class="menu-title">Logout</div>
+                <div class="menu-content">
+                    <div class="menu-title">Logout</div>
+                    <div class="menu-subtitle">Sign out of your account</div>
+                </div>
             </div>
         </div>
 
         <div class="bot-selection" id="botSelection">
-            <button class="back-btn" onclick="hideBotSelection()">← Back</button>
-            <h2 style="margin-bottom: 20px; color: #333;">Select Bot Difficulty</h2>
+            <button class="back-btn" onclick="hideBotSelection()">← Back to Menu</button>
+            <h2 style="margin-bottom: 20px; color: #333;">Select Your Opponent</h2>
             <div class="bot-list" id="botList"></div>
         </div>
 
@@ -701,11 +1263,184 @@
         </div>
     </div>
 
+    <!-- Friends Modal -->
+    <div class="friends-modal" id="friendsModal">
+        <div class="friends-content">
+            <div class="friends-header">
+                <h2 style="margin: 0;">Friends</h2>
+                <button onclick="closeFriends()" style="background: none; border: none; font-size: 24px; cursor: pointer;">✕</button>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" id="friendSearchInput" placeholder="Search username...">
+                <button onclick="searchFriend()">Search</button>
+            </div>
+
+            <div class="friends-tabs">
+                <button class="friend-tab active" onclick="switchFriendTab('friends')">Friends</button>
+                <button class="friend-tab" onclick="switchFriendTab('requests')">Requests <span id="requestCount"></span></button>
+                <button class="friend-tab" onclick="switchFriendTab('sent')">Sent</button>
+            </div>
+
+            <div id="friendsListContainer">
+                <div id="friendsList" class="friends-list"></div>
+                <div id="requestsList" class="friends-list" style="display: none;"></div>
+                <div id="sentList" class="friends-list" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friend Profile Modal -->
+    <div class="profile-modal" id="friendProfileModal">
+        <div class="profile-content">
+            <div class="profile-header">
+                <div class="profile-avatar">👤</div>
+                <h2 id="friendProfileUsername"></h2>
+                <p id="friendProfileUserId" style="color: #666; margin-top: 5px;"></p>
+            </div>
+
+            <div class="profile-section">
+                <h3>🔥 Streak</h3>
+                <div style="background: linear-gradient(135deg, #FF6B6B, #FF8E53); color: white; padding: 20px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 48px; font-weight: bold;" id="friendStreak">0</div>
+                    <div style="font-size: 14px; margin-top: 5px;">Days</div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h3>📊 Ratings</h3>
+                <div class="profile-stat-grid">
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Bullet</div>
+                        <div class="profile-stat-value" id="friendBullet">1200</div>
+                    </div>
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Blitz</div>
+                        <div class="profile-stat-value" id="friendBlitz">1200</div>
+                    </div>
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Rapid</div>
+                        <div class="profile-stat-value" id="friendRapid">1200</div>
+                    </div>
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Level</div>
+                        <div class="profile-stat-value" id="friendLevel">1</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h3>🎮 Statistics</h3>
+                <div class="profile-stat-grid">
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Games</div>
+                        <div class="profile-stat-value" id="friendGames">0</div>
+                    </div>
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Wins</div>
+                        <div class="profile-stat-value" style="color: #4CAF50;" id="friendWins">0</div>
+                    </div>
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Win Rate</div>
+                        <div class="profile-stat-value" id="friendWinRate">0%</div>
+                    </div>
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">XP</div>
+                        <div class="profile-stat-value" id="friendXP">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h3>🏆 Achievements</h3>
+                <div id="friendAchievements" style="background: #f8f8f8; padding: 20px; border-radius: 10px; text-align: center; color: #999;">
+                    View their achievements and milestones
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="closeFriendProfile()">Close</button>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="profile-modal" id="profileModal">
+        <div class="profile-content">
+            <div class="profile-header">
+                <div class="profile-avatar">👤</div>
+                <h2 id="profileUsername"></h2>
+                <p id="profileUserId" style="color: #666; margin-top: 5px;"></p>
+            </div>
+
+            <div class="profile-section">
+                <h3>📊 Ratings</h3>
+                <div class="profile-stat-grid">
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Bullet</div>
+                        <div class="profile-stat-value" id="profileBullet">1200</div>
+                    </div>
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Blitz</div>
+                        <div class="profile-stat-value" id="profileBlitz">1200</div>
+                    </div>
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Rapid</div>
+                        <div class="profile-stat-value" id="profileRapid">1200</div>
+                    </div>
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Level</div>
+                        <div class="profile-stat-value" id="profileLevel">1</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h3>🎮 Statistics</h3>
+                <div class="profile-stat-grid">
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Games Played</div>
+                        <div class="profile-stat-value" id="profileGames">0</div>
+                    </div>
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Wins</div>
+                        <div class="profile-stat-value" style="color: #4CAF50;" id="profileWins">0</div>
+                    </div>
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Losses</div>
+                        <div class="profile-stat-value" style="color: #f44336;" id="profileLosses">0</div>
+                    </div>
+                    <div class="profile-stat-item">
+                        <div class="profile-stat-label">Draws</div>
+                        <div class="profile-stat-value" style="color: #FF9800;" id="profileDraws">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h3>⭐ Experience</h3>
+                <div style="background: #f8f8f8; padding: 20px; border-radius: 10px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>Current XP:</span>
+                        <strong id="profileXP">0</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Next Level:</span>
+                        <strong id="profileNextLevel">100 XP</strong>
+                    </div>
+                    <div class="xp-progress" style="margin-top: 15px;">
+                        <div class="xp-fill" id="profileXPBar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="closeProfile()">Close</button>
+        </div>
+    </div>
+
     <!-- Game Screen -->
     <div class="game-screen" id="gameScreen">
         <div class="game-layout">
             <div class="board-container">
-                <div class="player-bar">
+                <div class="player-bar" id="opponentBar">
                     <div class="player-name" id="opponentName">Opponent</div>
                     <div class="clock" id="opponentClock">10:00</div>
                 </div>
@@ -714,7 +1449,7 @@
                     <div class="board-grid" id="chessBoard"></div>
                 </div>
 
-                <div class="player-bar">
+                <div class="player-bar" id="playerBar">
                     <div class="player-name" id="playerName">You</div>
                     <div class="clock" id="playerClock">10:00</div>
                 </div>
@@ -753,19 +1488,30 @@
         <div class="modal-content">
             <h2>Game Over!</h2>
             <p id="gameResult" style="font-size: 24px; margin: 20px 0;"></p>
-            <div id="ratingChange" style="margin: 20px 0; font-size: 18px;"></div>
+            <div id="rewardsDisplay" style="margin: 20px 0; font-size: 18px;"></div>
             <button class="btn btn-primary" onclick="closeGameOver()">Back to Menu</button>
         </div>
     </div>
 
     <script>
+        // ============== SIMPLE PASSWORD HASHING ==============
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return hash.toString(36);
+        }
+
         // ============== DATA STORAGE ==============
-        const STORAGE_KEY = 'chessmastersdata';
+        const STORAGE_KEY = 'chessmastersdata_v2';
         
         function saveData() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify({
                 users: Array.from(users.entries()),
-                currentUser: currentUser
+                currentUser: currentUser ? currentUser.userId : null
             }));
         }
 
@@ -774,7 +1520,9 @@
             if (data) {
                 const parsed = JSON.parse(data);
                 users = new Map(parsed.users);
-                return parsed.currentUser;
+                if (parsed.currentUser) {
+                    return users.get(parsed.currentUser);
+                }
             }
             return null;
         }
@@ -792,15 +1540,22 @@
             const user = {
                 userId,
                 username,
-                password,
+                passwordHash: simpleHash(password),
                 ratings: { bullet: 1200, blitz: 1200, rapid: 1200 },
+                lastRatingChange: { bullet: 0, blitz: 0, rapid: 0 },
                 xp: 0,
                 level: 1,
                 wins: 0,
                 losses: 0,
                 draws: 0,
                 gamesPlayed: 0,
-                history: []
+                history: [],
+                achievements: [],
+                streak: 0,
+                lastLogin: Date.now(),
+                friends: [],
+                friendRequests: [],
+                sentRequests: []
             };
             users.set(userId, user);
             saveData();
@@ -829,7 +1584,9 @@
                 return;
             }
 
-            const user = Array.from(users.values()).find(u => u.username === username && u.password === password);
+            const user = Array.from(users.values()).find(u => 
+                u.username === username && u.passwordHash === simpleHash(password)
+            );
             
             if (user) {
                 currentUser = user;
@@ -866,21 +1623,304 @@
 
         function handleGuest() {
             const guestName = 'Guest' + Math.floor(Math.random() * 10000);
-            currentUser = createUser(guestName, '');
+            currentUser = createUser(guestName, 'guest');
             showHome();
         }
 
         function logout() {
-            currentUser = null;
-            saveData();
-            document.getElementById('homeScreen').style.display = 'none';
-            document.getElementById('loginScreen').style.display = 'flex';
+            if (confirm('Are you sure you want to logout?')) {
+                currentUser = null;
+                saveData();
+                document.getElementById('homeScreen').style.display = 'none';
+                document.getElementById('loginScreen').style.display = 'flex';
+            }
         }
 
         function showHome() {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('homeScreen').style.display = 'block';
+            checkDailyStreak();
             updateHomeDashboard();
+        }
+
+        function checkDailyStreak() {
+            const now = Date.now();
+            const lastLogin = currentUser.lastLogin || 0;
+            const daysSince = Math.floor((now - lastLogin) / (1000 * 60 * 60 * 24));
+
+            // Ensure streak property exists
+            if (typeof currentUser.streak !== 'number') {
+                currentUser.streak = 0;
+            }
+
+            if (daysSince === 0) {
+                // Same day - no change
+            } else if (daysSince === 1) {
+                // Next day - increment streak
+                currentUser.streak++;
+                addXP(20); // Bonus XP for logging in
+                showStreakNotification(currentUser.streak);
+            } else if (daysSince > 1) {
+                // Missed days - reset streak
+                if (currentUser.streak > 0) {
+                    alert(`😔 Streak broken! You had ${currentUser.streak} days. Keep logging in daily!`);
+                }
+                currentUser.streak = 1;
+            }
+
+            currentUser.lastLogin = now;
+            saveData();
+        }
+
+        function showStreakNotification(streak) {
+            const messages = [
+                "Great job! Keep it up! 🔥",
+                "You're on fire! 💪",
+                "Awesome dedication! 🌟",
+                "Consistency is key! 🎯",
+                "Legend in the making! 🏆"
+            ];
+            const message = messages[Math.min(Math.floor(streak / 5), messages.length - 1)];
+            
+            const popup = document.createElement('div');
+            popup.className = 'rating-popup positive';
+            popup.innerHTML = `🔥 ${streak} Day Streak!<br><small>${message}</small>`;
+            popup.style.fontSize = '36px';
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 3000);
+        }
+
+        // ============== FRIENDS SYSTEM ==============
+        function showFriends() {
+            updateFriendsLists();
+            document.getElementById('friendsModal').classList.add('show');
+        }
+
+        function closeFriends() {
+            document.getElementById('friendsModal').classList.remove('show');
+        }
+
+        function switchFriendTab(tab) {
+            // Update tabs
+            document.querySelectorAll('.friend-tab').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Show corresponding list
+            document.getElementById('friendsList').style.display = tab === 'friends' ? 'flex' : 'none';
+            document.getElementById('requestsList').style.display = tab === 'requests' ? 'flex' : 'none';
+            document.getElementById('sentList').style.display = tab === 'sent' ? 'flex' : 'none';
+        }
+
+        function searchFriend() {
+            const searchUsername = document.getElementById('friendSearchInput').value.trim();
+            if (!searchUsername) {
+                alert('Please enter a username');
+                return;
+            }
+
+            const targetUser = Array.from(users.values()).find(u => u.username.toLowerCase() === searchUsername.toLowerCase());
+
+            if (!targetUser) {
+                alert('User not found!');
+                return;
+            }
+
+            if (targetUser.userId === currentUser.userId) {
+                alert('You cannot add yourself as a friend!');
+                return;
+            }
+
+            if (currentUser.friends.includes(targetUser.userId)) {
+                alert('Already friends with this user!');
+                return;
+            }
+
+            if (currentUser.sentRequests.includes(targetUser.userId)) {
+                alert('Friend request already sent!');
+                return;
+            }
+
+            // Send friend request
+            currentUser.sentRequests.push(targetUser.userId);
+            
+            // Ensure target user has arrays
+            if (!targetUser.friendRequests) targetUser.friendRequests = [];
+            targetUser.friendRequests.push(currentUser.userId);
+
+            saveData();
+            alert(`Friend request sent to ${targetUser.username}!`);
+            document.getElementById('friendSearchInput').value = '';
+            updateFriendsLists();
+        }
+
+        function updateFriendsLists() {
+            // Ensure arrays exist
+            if (!currentUser.friends) currentUser.friends = [];
+            if (!currentUser.friendRequests) currentUser.friendRequests = [];
+            if (!currentUser.sentRequests) currentUser.sentRequests = [];
+
+            // Update request count
+            const requestCount = currentUser.friendRequests.length;
+            document.getElementById('requestCount').textContent = requestCount > 0 ? `(${requestCount})` : '';
+
+            // Friends list
+            const friendsList = document.getElementById('friendsList');
+            friendsList.innerHTML = '';
+            
+            if (currentUser.friends.length === 0) {
+                friendsList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">👥</div><p>No friends yet. Search for users to add!</p></div>';
+            } else {
+                currentUser.friends.forEach(friendId => {
+                    const friend = users.get(friendId);
+                    if (friend) {
+                        const card = createFriendCard(friend, 'friend');
+                        friendsList.appendChild(card);
+                    }
+                });
+            }
+
+            // Friend requests list
+            const requestsList = document.getElementById('requestsList');
+            requestsList.innerHTML = '';
+            
+            if (currentUser.friendRequests.length === 0) {
+                requestsList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📬</div><p>No friend requests</p></div>';
+            } else {
+                currentUser.friendRequests.forEach(requesterId => {
+                    const requester = users.get(requesterId);
+                    if (requester) {
+                        const card = createFriendCard(requester, 'request');
+                        requestsList.appendChild(card);
+                    }
+                });
+            }
+
+            // Sent requests list
+            const sentList = document.getElementById('sentList');
+            sentList.innerHTML = '';
+            
+            if (currentUser.sentRequests.length === 0) {
+                sentList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">✉️</div><p>No pending requests</p></div>';
+            } else {
+                currentUser.sentRequests.forEach(targetId => {
+                    const target = users.get(targetId);
+                    if (target) {
+                        const card = createFriendCard(target, 'sent');
+                        sentList.appendChild(card);
+                    }
+                });
+            }
+        }
+
+        function createFriendCard(user, type) {
+            const card = document.createElement('div');
+            card.className = 'friend-card';
+
+            const totalGames = user.wins + user.losses + user.draws;
+            const winRate = totalGames > 0 ? Math.round((user.wins / totalGames) * 100) : 0;
+
+            card.innerHTML = `
+                <div class="friend-info">
+                    <div class="friend-avatar">👤</div>
+                    <div class="friend-details">
+                        <h4>${user.username}</h4>
+                        <p>Level ${user.level} • ${user.ratings.blitz} ELO • ${user.streak || 0}🔥</p>
+                    </div>
+                </div>
+                <div class="friend-actions">
+                    ${type === 'request' ? `
+                        <button class="friend-btn btn-accept" onclick="acceptFriend('${user.userId}')">Accept</button>
+                        <button class="friend-btn btn-decline" onclick="declineFriend('${user.userId}')">Decline</button>
+                    ` : type === 'friend' ? `
+                        <button class="friend-btn btn-view" onclick="viewFriendProfile('${user.userId}')">View</button>
+                        <button class="friend-btn btn-remove" onclick="removeFriend('${user.userId}')">Remove</button>
+                    ` : `
+                        <button class="friend-btn btn-remove" onclick="cancelRequest('${user.userId}')">Cancel</button>
+                    `}
+                </div>
+            `;
+
+            return card;
+        }
+
+        function acceptFriend(friendId) {
+            const friend = users.get(friendId);
+            if (!friend) return;
+
+            // Add to friends
+            currentUser.friends.push(friendId);
+            friend.friends.push(currentUser.userId);
+
+            // Remove from requests
+            currentUser.friendRequests = currentUser.friendRequests.filter(id => id !== friendId);
+            friend.sentRequests = friend.sentRequests.filter(id => id !== currentUser.userId);
+
+            saveData();
+            alert(`You are now friends with ${friend.username}!`);
+            updateFriendsLists();
+        }
+
+        function declineFriend(friendId) {
+            const friend = users.get(friendId);
+            
+            currentUser.friendRequests = currentUser.friendRequests.filter(id => id !== friendId);
+            if (friend) {
+                friend.sentRequests = friend.sentRequests.filter(id => id !== currentUser.userId);
+            }
+
+            saveData();
+            updateFriendsLists();
+        }
+
+        function removeFriend(friendId) {
+            const friend = users.get(friendId);
+            if (!confirm(`Remove ${friend?.username || 'this user'} from friends?`)) return;
+
+            currentUser.friends = currentUser.friends.filter(id => id !== friendId);
+            if (friend) {
+                friend.friends = friend.friends.filter(id => id !== currentUser.userId);
+            }
+
+            saveData();
+            updateFriendsLists();
+        }
+
+        function cancelRequest(targetId) {
+            currentUser.sentRequests = currentUser.sentRequests.filter(id => id !== targetId);
+            
+            const target = users.get(targetId);
+            if (target) {
+                target.friendRequests = target.friendRequests.filter(id => id !== currentUser.userId);
+            }
+
+            saveData();
+            updateFriendsLists();
+        }
+
+        function viewFriendProfile(friendId) {
+            const friend = users.get(friendId);
+            if (!friend) return;
+
+            const totalGames = friend.wins + friend.losses + friend.draws;
+            const winRate = totalGames > 0 ? Math.round((friend.wins / totalGames) * 100) : 0;
+
+            document.getElementById('friendProfileUsername').textContent = friend.username;
+            document.getElementById('friendProfileUserId').textContent = 'ID: ' + friend.userId;
+            document.getElementById('friendStreak').textContent = friend.streak || 0;
+            document.getElementById('friendBullet').textContent = friend.ratings.bullet;
+            document.getElementById('friendBlitz').textContent = friend.ratings.blitz;
+            document.getElementById('friendRapid').textContent = friend.ratings.rapid;
+            document.getElementById('friendLevel').textContent = friend.level;
+            document.getElementById('friendGames').textContent = totalGames;
+            document.getElementById('friendWins').textContent = friend.wins;
+            document.getElementById('friendWinRate').textContent = winRate + '%';
+            document.getElementById('friendXP').textContent = friend.xp;
+
+            document.getElementById('friendProfileModal').classList.add('show');
+        }
+
+        function closeFriendProfile() {
+            document.getElementById('friendProfileModal').classList.remove('show');
         }
 
         function updateHomeDashboard() {
@@ -889,9 +1929,31 @@
             document.getElementById('levelDisplay').textContent = currentUser.level;
             document.getElementById('xpDisplay').textContent = currentUser.xp;
             document.getElementById('totalGamesDisplay').textContent = currentUser.gamesPlayed;
+            
+            // Update streak
+            if (typeof currentUser.streak !== 'number') currentUser.streak = 0;
+            document.getElementById('streakNumber').textContent = currentUser.streak;
+            
+            const streakMessages = [
+                "Start your streak today!",
+                "Great start! Keep going!",
+                "You're building momentum!",
+                "Impressive dedication!",
+                "Outstanding consistency!",
+                "You're unstoppable! 🔥"
+            ];
+            const messageIndex = Math.min(Math.floor(currentUser.streak / 3), streakMessages.length - 1);
+            document.getElementById('streakMessage').textContent = streakMessages[messageIndex];
+            
+            // Update ratings with change indicators
             document.getElementById('bulletRating').textContent = currentUser.ratings.bullet;
             document.getElementById('blitzRating').textContent = currentUser.ratings.blitz;
             document.getElementById('rapidRating').textContent = currentUser.ratings.rapid;
+            
+            updateRatingChange('bullet');
+            updateRatingChange('blitz');
+            updateRatingChange('rapid');
+            
             document.getElementById('winsDisplay').textContent = currentUser.wins;
             document.getElementById('lossesDisplay').textContent = currentUser.losses;
             document.getElementById('drawsDisplay').textContent = currentUser.draws;
@@ -899,6 +1961,34 @@
             const totalGames = currentUser.wins + currentUser.losses + currentUser.draws;
             const winRate = totalGames > 0 ? Math.round((currentUser.wins / totalGames) * 100) : 0;
             document.getElementById('winRateDisplay').textContent = winRate + '%';
+            
+            // Update XP bar
+            const xpForNextLevel = currentUser.level * 100;
+            const xpPercent = (currentUser.xp / xpForNextLevel) * 100;
+            document.getElementById('xpBar').style.width = xpPercent + '%';
+            document.getElementById('xpText').textContent = `${currentUser.xp} / ${xpForNextLevel} XP to Level ${currentUser.level + 1}`;
+        }
+
+        function updateRatingChange(type) {
+            const change = currentUser.lastRatingChange[type];
+            const elem = document.getElementById(type + 'Change');
+            if (change !== 0) {
+                elem.textContent = change > 0 ? `+${change}` : `${change}`;
+                elem.className = 'rating-change ' + (change > 0 ? 'positive' : 'negative');
+            } else {
+                elem.textContent = '';
+            }
+        }
+
+        function showRatingPopup(change) {
+            if (change === 0) return;
+            
+            const popup = document.createElement('div');
+            popup.className = 'rating-popup ' + (change > 0 ? 'positive' : 'negative');
+            popup.textContent = change > 0 ? `+${change}` : `${change}`;
+            document.body.appendChild(popup);
+            
+            setTimeout(() => popup.remove(), 2000);
         }
 
         function addXP(amount) {
@@ -907,13 +1997,24 @@
             if (currentUser.xp >= xpForNextLevel) {
                 currentUser.level++;
                 currentUser.xp -= xpForNextLevel;
+                showLevelUp();
             }
             saveData();
         }
 
+        function showLevelUp() {
+            const popup = document.createElement('div');
+            popup.className = 'rating-popup positive';
+            popup.innerHTML = `🎉 Level ${currentUser.level}!`;
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 3000);
+        }
+
         function updateRating(ratingType, change) {
             currentUser.ratings[ratingType] = Math.max(400, Math.min(3000, currentUser.ratings[ratingType] + change));
+            currentUser.lastRatingChange[ratingType] = change;
             saveData();
+            showRatingPopup(change);
         }
 
         function calculateEloChange(playerRating, opponentRating, result) {
@@ -923,20 +2024,49 @@
             return Math.round(K * (actualScore - expectedScore));
         }
 
+        function showProfile() {
+            document.getElementById('profileUsername').textContent = currentUser.username;
+            document.getElementById('profileUserId').textContent = 'ID: ' + currentUser.userId;
+            document.getElementById('profileBullet').textContent = currentUser.ratings.bullet;
+            document.getElementById('profileBlitz').textContent = currentUser.ratings.blitz;
+            document.getElementById('profileRapid').textContent = currentUser.ratings.rapid;
+            document.getElementById('profileLevel').textContent = currentUser.level;
+            document.getElementById('profileGames').textContent = currentUser.gamesPlayed;
+            document.getElementById('profileWins').textContent = currentUser.wins;
+            document.getElementById('profileLosses').textContent = currentUser.losses;
+            document.getElementById('profileDraws').textContent = currentUser.draws;
+            document.getElementById('profileXP').textContent = currentUser.xp;
+            
+            const xpForNextLevel = currentUser.level * 100;
+            document.getElementById('profileNextLevel').textContent = xpForNextLevel + ' XP';
+            const xpPercent = (currentUser.xp / xpForNextLevel) * 100;
+            document.getElementById('profileXPBar').style.width = xpPercent + '%';
+            
+            document.getElementById('profileModal').classList.add('show');
+        }
+
+        function closeProfile() {
+            document.getElementById('profileModal').classList.remove('show');
+        }
+
+        function showAchievements() {
+            alert('🏆 Achievements\n\nComing Soon!\n\n• First Win\n• 10 Wins\n• 100 Games\n• Reach 1500\n• Beat 2000 Bot\n• Win Streak 5\n\nKeep playing to unlock!');
+        }
+
         // ============== BOT SYSTEM ==============
         const bots = [
-            { level: 1, name: 'Beginner Bot', rating: 400 },
-            { level: 2, name: 'Rookie Bot', rating: 600 },
-            { level: 3, name: 'Novice Bot', rating: 800 },
-            { level: 4, name: 'Amateur Bot', rating: 1000 },
-            { level: 5, name: 'Casual Bot', rating: 1200 },
-            { level: 6, name: 'Intermediate Bot', rating: 1400 },
-            { level: 7, name: 'Advanced Bot', rating: 1600 },
-            { level: 8, name: 'Expert Bot', rating: 1800 },
-            { level: 9, name: 'Master Bot', rating: 2000 },
-            { level: 10, name: 'Grandmaster Bot', rating: 2200 },
-            { level: 11, name: 'Elite Bot', rating: 2400 },
-            { level: 12, name: 'Legendary Bot', rating: 2600 }
+            { level: 1, name: 'Beginner Bot', rating: 400, strength: 'Hangs pieces', depth: 1 },
+            { level: 2, name: 'Rookie Bot', rating: 600, strength: 'Random moves', depth: 1 },
+            { level: 3, name: 'Novice Bot', rating: 800, strength: 'Sees captures', depth: 2 },
+            { level: 4, name: 'Amateur Bot', rating: 1000, strength: 'Basic tactics', depth: 2 },
+            { level: 5, name: 'Casual Bot', rating: 1200, strength: 'Positional', depth: 2 },
+            { level: 6, name: 'Intermediate Bot', rating: 1400, strength: 'Sees threats', depth: 3 },
+            { level: 7, name: 'Advanced Bot', rating: 1600, strength: 'Tactical', depth: 3 },
+            { level: 8, name: 'Expert Bot', rating: 1800, strength: 'Strategic', depth: 3 },
+            { level: 9, name: 'Master Bot', rating: 2000, strength: 'Strong play', depth: 4 },
+            { level: 10, name: 'Grandmaster Bot', rating: 2200, strength: 'Very strong', depth: 4 },
+            { level: 11, name: 'Elite Bot', rating: 2400, strength: 'Near perfect', depth: 5 },
+            { level: 12, name: 'Legendary Bot', rating: 2600, strength: 'Engine-like', depth: 5 }
         ];
 
         function showBotSelection() {
@@ -953,6 +2083,7 @@
                 card.innerHTML = `
                     <div class="bot-name">Level ${bot.level}: ${bot.name}</div>
                     <div class="bot-rating">Rating: ${bot.rating}</div>
+                    <div class="bot-strength">${bot.strength}</div>
                 `;
                 card.onclick = () => startBotGame(bot);
                 botList.appendChild(card);
@@ -964,15 +2095,45 @@
             document.getElementById('mainMenu').style.display = 'grid';
         }
 
-        function showProfile() {
-            alert(`Profile\n\nUsername: ${currentUser.username}\nUser ID: ${currentUser.userId}\n\nRatings:\nBullet: ${currentUser.ratings.bullet}\nBlitz: ${currentUser.ratings.blitz}\nRapid: ${currentUser.ratings.rapid}\n\nStats:\nWins: ${currentUser.wins}\nLosses: ${currentUser.losses}\nDraws: ${currentUser.draws}\n\nLevel: ${currentUser.level}\nXP: ${currentUser.xp}`);
-        }
-
         // ============== CHESS ENGINE ==============
         const pieces = {
             white: { king: '♔', queen: '♕', rook: '♖', bishop: '♗', knight: '♘', pawn: '♙' },
             black: { king: '♚', queen: '♛', rook: '♜', bishop: '♝', knight: '♞', pawn: '♟' }
         };
+
+        // Piece-Square Tables for positional evaluation
+        const pawnTable = [
+            0,  0,  0,  0,  0,  0,  0,  0,
+            50, 50, 50, 50, 50, 50, 50, 50,
+            10, 10, 20, 30, 30, 20, 10, 10,
+            5,  5, 10, 25, 25, 10,  5,  5,
+            0,  0,  0, 20, 20,  0,  0,  0,
+            5, -5,-10,  0,  0,-10, -5,  5,
+            5, 10, 10,-20,-20, 10, 10,  5,
+            0,  0,  0,  0,  0,  0,  0,  0
+        ];
+
+        const knightTable = [
+            -50,-40,-30,-30,-30,-30,-40,-50,
+            -40,-20,  0,  0,  0,  0,-20,-40,
+            -30,  0, 10, 15, 15, 10,  0,-30,
+            -30,  5, 15, 20, 20, 15,  5,-30,
+            -30,  0, 15, 20, 20, 15,  0,-30,
+            -30,  5, 10, 15, 15, 10,  5,-30,
+            -40,-20,  0,  5,  5,  0,-20,-40,
+            -50,-40,-30,-30,-30,-30,-40,-50
+        ];
+
+        const bishopTable = [
+            -20,-10,-10,-10,-10,-10,-10,-20,
+            -10,  0,  0,  0,  0,  0,  0,-10,
+            -10,  0,  5, 10, 10,  5,  0,-10,
+            -10,  5,  5, 10, 10,  5,  5,-10,
+            -10,  0, 10, 10, 10, 10,  0,-10,
+            -10, 10, 10, 10, 10, 10, 10,-10,
+            -10,  5,  0,  0,  0,  0,  5,-10,
+            -20,-10,-10,-10,-10,-10,-10,-20
+        ];
 
         let board = [];
         let selectedSquare = null;
@@ -1019,16 +2180,17 @@
 
                     const piece = board[row][col];
                     if (piece) {
-                        square.textContent = pieces[piece.color][piece.type];
+                        const pieceElem = document.createElement('span');
+                        pieceElem.className = 'piece';
+                        pieceElem.textContent = pieces[piece.color][piece.type];
+                        square.appendChild(pieceElem);
                     }
 
-                    // Highlight last move
                     if (lastMove && ((lastMove.from[0] === row && lastMove.from[1] === col) || 
                                     (lastMove.to[0] === row && lastMove.to[1] === col))) {
                         square.classList.add('last-move');
                     }
 
-                    // Check indicator
                     if (piece?.type === 'king' && isInCheck(piece.color)) {
                         square.classList.add('in-check');
                     }
@@ -1036,6 +2198,10 @@
                     boardElement.appendChild(square);
                 }
             }
+
+            // Update active player bar
+            document.getElementById('playerBar').classList.toggle('active', currentTurn === 'white');
+            document.getElementById('opponentBar').classList.toggle('active', currentTurn === 'black');
         }
 
         function handleSquareClick(row, col) {
@@ -1089,7 +2255,6 @@
 
             let moves = getRawMoves(row, col, piece);
             
-            // Filter moves that leave king in check
             moves = moves.filter(([toRow, toCol]) => {
                 const tempPiece = board[toRow][toCol];
                 board[toRow][toCol] = piece;
@@ -1185,7 +2350,6 @@
         function makeMove(fromRow, fromCol, toRow, toCol) {
             const piece = board[fromRow][fromCol];
             
-            // Check for pawn promotion
             if (piece.type === 'pawn' && (toRow === 0 || toRow === 7)) {
                 promotionPending = { fromRow, fromCol, toRow, toCol };
                 document.getElementById('promotionModal').classList.add('show');
@@ -1219,7 +2383,7 @@
             renderBoard();
 
             if (!gameOver && gameMode === 'bot' && currentTurn === 'black') {
-                setTimeout(() => makeBotMove(), 500);
+                setTimeout(() => makeBotMove(), currentBot.depth * 200);
             }
         }
 
@@ -1289,7 +2453,7 @@
             let ratingChange = 0;
 
             if (winner === 'draw') {
-                resultText = 'Draw - ' + reason;
+                resultText = '⚖️ Draw - ' + reason;
                 currentUser.draws++;
                 xpGain = 15;
             } else if (winner === 'white') {
@@ -1314,9 +2478,12 @@
             addXP(xpGain);
 
             document.getElementById('gameResult').textContent = resultText;
-            document.getElementById('ratingChange').innerHTML = `
-                <div>XP Gained: +${xpGain}</div>
-                ${ratingChange !== 0 ? `<div>Rating Change: ${ratingChange > 0 ? '+' : ''}${ratingChange}</div>` : ''}
+            document.getElementById('rewardsDisplay').innerHTML = `
+                <div style="padding: 15px; background: #f8f8f8; border-radius: 10px;">
+                    <div style="margin-bottom: 10px;">✨ <strong>XP Gained:</strong> +${xpGain}</div>
+                    ${ratingChange !== 0 ? `<div style="color: ${ratingChange > 0 ? '#4CAF50' : '#f44336'};">📊 <strong>Rating Change:</strong> ${ratingChange > 0 ? '+' : ''}${ratingChange}</div>` : ''}
+                    ${currentUser.level > 1 ? `<div style="margin-top: 10px;">⭐ <strong>Level:</strong> ${currentUser.level}</div>` : ''}
+                </div>
             `;
             document.getElementById('gameOverModal').classList.add('show');
             
@@ -1330,7 +2497,7 @@
         }
 
         function offerDraw() {
-            if (!gameOver && confirm('Offer a draw to your opponent?')) {
+            if (!gameOver && confirm('Offer a draw?')) {
                 endGame('draw', 'agreement');
             }
         }
@@ -1354,60 +2521,181 @@
                 `;
                 list.appendChild(pair);
             }
+            
+            list.scrollTop = list.scrollHeight;
         }
 
-        // ============== BOT AI ==============
-        function makeBotMove() {
-            if (gameOver) return;
-
-            const botMoves = [];
+        // ============== IMPROVED BOT AI ==============
+        function evaluatePosition(color) {
+            let score = 0;
+            
             for (let row = 0; row < 8; row++) {
                 for (let col = 0; col < 8; col++) {
-                    if (board[row][col]?.color === 'black') {
-                        getLegalMoves(row, col).forEach(([r, c]) => {
-                            botMoves.push({ 
-                                from: [row, col], 
-                                to: [r, c], 
-                                score: evaluateMove(row, col, r, c) 
+                    const piece = board[row][col];
+                    if (!piece) continue;
+                    
+                    const pieceValue = getPieceValue(piece);
+                    const positionValue = getPositionValue(piece, row, col);
+                    const mobilityValue = getLegalMoves(row, col).length * 5;
+                    
+                    const totalValue = pieceValue + positionValue + mobilityValue;
+                    
+                    if (piece.color === color) {
+                        score += totalValue;
+                    } else {
+                        score -= totalValue;
+                    }
+                }
+            }
+            
+            // King safety
+            if (isInCheck(color)) score -= 50;
+            if (isInCheck(color === 'white' ? 'black' : 'white')) score += 50;
+            
+            return score;
+        }
+
+        function getPieceValue(piece) {
+            const values = {
+                pawn: 100,
+                knight: 320,
+                bishop: 330,
+                rook: 500,
+                queen: 900,
+                king: 20000
+            };
+            return values[piece.type] || 0;
+        }
+
+        function getPositionValue(piece, row, col) {
+            const index = row * 8 + col;
+            
+            if (piece.type === 'pawn') {
+                return piece.color === 'white' ? pawnTable[index] : pawnTable[63 - index];
+            } else if (piece.type === 'knight') {
+                return knightTable[index];
+            } else if (piece.type === 'bishop') {
+                return bishopTable[index];
+            }
+            
+            // Center control bonus
+            if ([3,4].includes(row) && [3,4].includes(col)) {
+                return 30;
+            }
+            
+            return 0;
+        }
+
+        function minimax(depth, alpha, beta, maximizing, color) {
+            if (depth === 0 || gameOver) {
+                return evaluatePosition(color);
+            }
+
+            const moves = getAllLegalMovesForColor(maximizing ? color : (color === 'white' ? 'black' : 'white'));
+            
+            if (moves.length === 0) return maximizing ? -999999 : 999999;
+
+            if (maximizing) {
+                let maxEval = -Infinity;
+                for (let move of moves) {
+                    const captured = board[move.to[0]][move.to[1]];
+                    const piece = board[move.from[0]][move.from[1]];
+                    
+                    board[move.to[0]][move.to[1]] = piece;
+                    board[move.from[0]][move.from[1]] = null;
+                    
+                    const evaluation = minimax(depth - 1, alpha, beta, false, color);
+                    
+                    board[move.from[0]][move.from[1]] = piece;
+                    board[move.to[0]][move.to[1]] = captured;
+                    
+                    maxEval = Math.max(maxEval, evaluation);
+                    alpha = Math.max(alpha, evaluation);
+                    if (beta <= alpha) break;
+                }
+                return maxEval;
+            } else {
+                let minEval = Infinity;
+                for (let move of moves) {
+                    const captured = board[move.to[0]][move.to[1]];
+                    const piece = board[move.from[0]][move.from[1]];
+                    
+                    board[move.to[0]][move.to[1]] = piece;
+                    board[move.from[0]][move.from[1]] = null;
+                    
+                    const evaluation = minimax(depth - 1, alpha, beta, true, color);
+                    
+                    board[move.from[0]][move.from[1]] = piece;
+                    board[move.to[0]][move.to[1]] = captured;
+                    
+                    minEval = Math.min(minEval, evaluation);
+                    beta = Math.min(beta, evaluation);
+                    if (beta <= alpha) break;
+                }
+                return minEval;
+            }
+        }
+
+        function getAllLegalMovesForColor(color) {
+            const moves = [];
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const piece = board[row][col];
+                    if (piece?.color === color) {
+                        const pieceMoves = getLegalMoves(row, col);
+                        pieceMoves.forEach(([toRow, toCol]) => {
+                            moves.push({
+                                from: [row, col],
+                                to: [toRow, toCol],
+                                piece: piece.type,
+                                capture: board[toRow][toCol]
                             });
                         });
                     }
                 }
             }
-
-            if (botMoves.length === 0) return;
-
-            botMoves.sort((a, b) => b.score - a.score);
-            
-            let selectedMove;
-            const difficulty = currentBot.level;
-            
-            if (difficulty <= 3) {
-                selectedMove = botMoves[Math.floor(Math.random() * Math.min(botMoves.length, 15))];
-            } else if (difficulty <= 6) {
-                selectedMove = botMoves[Math.floor(Math.random() * Math.min(botMoves.length, 5))];
-            } else if (difficulty <= 9) {
-                selectedMove = botMoves[Math.floor(Math.random() * Math.min(botMoves.length, 3))];
-            } else {
-                selectedMove = botMoves[0];
-            }
-
-            const { from, to } = selectedMove;
-            executeMoveInternal(from[0], from[1], to[0], to[1]);
+            return moves;
         }
 
-        function evaluateMove(fromRow, fromCol, toRow, toCol) {
-            let score = Math.random() * 5;
+        function makeBotMove() {
+            if (gameOver) return;
+
+            const allMoves = getAllLegalMovesForColor('black');
+            if (allMoves.length === 0) return;
+
+            let bestMove = null;
+            let bestValue = -Infinity;
+
+            // Add difficulty-based randomness
+            const errorRate = (12 - currentBot.level) * 0.08;
             
-            const target = board[toRow][toCol];
-            if (target) {
-                const values = { pawn: 10, knight: 30, bishop: 30, rook: 50, queen: 90, king: 900 };
-                score += values[target.type] || 0;
+            if (Math.random() < errorRate) {
+                // Make a random (weaker) move
+                bestMove = allMoves[Math.floor(Math.random() * Math.min(allMoves.length, 10))];
+            } else {
+                // Use minimax
+                for (let move of allMoves) {
+                    const captured = board[move.to[0]][move.to[1]];
+                    const piece = board[move.from[0]][move.from[1]];
+                    
+                    board[move.to[0]][move.to[1]] = piece;
+                    board[move.from[0]][move.from[1]] = null;
+                    
+                    const value = minimax(currentBot.depth - 1, -Infinity, Infinity, false, 'black');
+                    
+                    board[move.from[0]][move.from[1]] = piece;
+                    board[move.to[0]][move.to[1]] = captured;
+                    
+                    if (value > bestValue) {
+                        bestValue = value;
+                        bestMove = move;
+                    }
+                }
             }
-            
-            if ([3,4].includes(toRow) && [3,4].includes(toCol)) score += 8;
-            
-            return score;
+
+            if (bestMove) {
+                executeMoveInternal(bestMove.from[0], bestMove.from[1], bestMove.to[0], bestMove.to[1]);
+            }
         }
 
         // ============== GAME MANAGEMENT ==============
