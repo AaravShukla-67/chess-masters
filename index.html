@@ -2057,16 +2057,16 @@
         const bots = [
             { level: 1, name: 'Beginner Bot', rating: 400, strength: 'Hangs pieces', depth: 1 },
             { level: 2, name: 'Rookie Bot', rating: 600, strength: 'Random moves', depth: 1 },
-            { level: 3, name: 'Novice Bot', rating: 800, strength: 'Sees captures', depth: 2 },
+            { level: 3, name: 'Novice Bot', rating: 800, strength: 'Sees captures', depth: 1 },
             { level: 4, name: 'Amateur Bot', rating: 1000, strength: 'Basic tactics', depth: 2 },
             { level: 5, name: 'Casual Bot', rating: 1200, strength: 'Positional', depth: 2 },
-            { level: 6, name: 'Intermediate Bot', rating: 1400, strength: 'Sees threats', depth: 3 },
+            { level: 6, name: 'Intermediate Bot', rating: 1400, strength: 'Sees threats', depth: 2 },
             { level: 7, name: 'Advanced Bot', rating: 1600, strength: 'Tactical', depth: 3 },
             { level: 8, name: 'Expert Bot', rating: 1800, strength: 'Strategic', depth: 3 },
-            { level: 9, name: 'Master Bot', rating: 2000, strength: 'Strong play', depth: 4 },
+            { level: 9, name: 'Master Bot', rating: 2000, strength: 'Strong play', depth: 3 },
             { level: 10, name: 'Grandmaster Bot', rating: 2200, strength: 'Very strong', depth: 4 },
-            { level: 11, name: 'Elite Bot', rating: 2400, strength: 'Near perfect', depth: 5 },
-            { level: 12, name: 'Legendary Bot', rating: 2600, strength: 'Engine-like', depth: 5 }
+            { level: 11, name: 'Elite Bot', rating: 2400, strength: 'Near perfect', depth: 4 },
+            { level: 12, name: 'Legendary Bot', rating: 2600, strength: 'Engine-like', depth: 4 }
         ];
 
         function showBotSelection() {
@@ -2322,6 +2322,37 @@
                             moves.push([r, c]);
                         }
                     });
+                    
+                    // Castling
+                    if (!piece.hasMoved && !isInCheck(piece.color)) {
+                        const rank = piece.color === 'white' ? 7 : 0;
+                        
+                        // King-side castling (short castle)
+                        const kingsideRook = board[rank][7];
+                        if (kingsideRook && !kingsideRook.hasMoved && kingsideRook.type === 'rook') {
+                            // Check if squares between king and rook are empty
+                            if (!board[rank][5] && !board[rank][6]) {
+                                // Check if squares king moves through are not under attack
+                                const opponent = piece.color === 'white' ? 'black' : 'white';
+                                if (!isSquareUnderAttack(rank, 5, opponent) && !isSquareUnderAttack(rank, 6, opponent)) {
+                                    moves.push([rank, 6]); // King moves to g-file
+                                }
+                            }
+                        }
+                        
+                        // Queen-side castling (long castle)
+                        const queensideRook = board[rank][0];
+                        if (queensideRook && !queensideRook.hasMoved && queensideRook.type === 'rook') {
+                            // Check if squares between king and rook are empty
+                            if (!board[rank][1] && !board[rank][2] && !board[rank][3]) {
+                                // Check if squares king moves through are not under attack
+                                const opponent = piece.color === 'white' ? 'black' : 'white';
+                                if (!isSquareUnderAttack(rank, 2, opponent) && !isSquareUnderAttack(rank, 3, opponent)) {
+                                    moves.push([rank, 2]); // King moves to c-file
+                                }
+                            }
+                        }
+                    }
                     break;
             }
 
@@ -2362,6 +2393,24 @@
         function executeMoveInternal(fromRow, fromCol, toRow, toCol, promoteTo = null) {
             const piece = board[fromRow][fromCol];
             const captured = board[toRow][toCol];
+            
+            // Check for castling
+            if (piece.type === 'king' && Math.abs(toCol - fromCol) === 2) {
+                // This is a castling move
+                if (toCol === 6) {
+                    // King-side castle - move rook from h to f
+                    const rook = board[fromRow][7];
+                    board[fromRow][5] = rook;
+                    board[fromRow][7] = null;
+                    if (rook) rook.hasMoved = true;
+                } else if (toCol === 2) {
+                    // Queen-side castle - move rook from a to d
+                    const rook = board[fromRow][0];
+                    board[fromRow][3] = rook;
+                    board[fromRow][0] = null;
+                    if (rook) rook.hasMoved = true;
+                }
+            }
             
             board[toRow][toCol] = piece;
             board[fromRow][fromCol] = null;
@@ -2409,18 +2458,21 @@
             if (!kingPos) return false;
 
             const opponent = color === 'white' ? 'black' : 'white';
-            for (let row = 0; row < 8; row++) {
-                for (let col = 0; col < 8; col++) {
-                    const piece = board[row][col];
-                    if (piece?.color === opponent) {
-                        const moves = getRawMoves(row, col, piece);
-                        if (moves.some(([r, c]) => r === kingPos[0] && c === kingPos[1])) {
+            return isSquareUnderAttack(kingPos[0], kingPos[1], opponent);
+        }
+
+        function isSquareUnderAttack(row, col, byColor) {
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    const piece = board[r][c];
+                    if (piece?.color === byColor) {
+                        const moves = getRawMoves(r, c, piece);
+                        if (moves.some(([mr, mc]) => mr === row && mc === col)) {
                             return true;
                         }
                     }
                 }
             }
-
             return false;
         }
 
