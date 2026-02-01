@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>♟️ Chess Masters - Professional Edition</title>
     <style>
+        /* ==================== PROFESSIONAL COLOR SYSTEM ==================== */
+        :root {
+            --primary-blue: #3B5BDB;
+            --light-blue-bg: #F5F7FF;
+            --card-white: #FFFFFF;
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --success-green: #22C55E;
+            --border: #E5E7EB;
+            --page-bg: #F9FAFB;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,9 +25,10 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            background: #F5F6FA;
+            background: var(--page-bg);
             min-height: 100vh;
             overflow-x: hidden;
+            color: var(--text-dark);
         }
 
         /* Animations */
@@ -1042,23 +1055,95 @@
         /* Multi-page Navigation */
         .nav-link {
             text-decoration: none;
-            color: #2D3748;
-            font-weight: 500;
-            padding: 8px 16px;
+            color: var(--text-dark);
+            font-weight: 600;
+            padding: 10px 18px;
             border-radius: 8px;
-            transition: all 0.3s;
+            transition: all 0.2s;
             cursor: pointer;
             display: inline-block;
+            white-space: nowrap;
         }
 
         .nav-link:hover {
-            background: #F7FAFC;
-            color: #5B5FC7;
+            background: var(--light-blue-bg);
+            color: var(--primary-blue);
         }
 
         .nav-link.active {
-            background: #5B5FC7;
+            background: var(--primary-blue);
             color: white;
+        }
+
+        /* Mobile Navigation Fix */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column !important;
+                padding: 10px 15px !important;
+                gap: 10px !important;
+            }
+
+            nav > div:nth-child(2) {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+                justify-content: center !important;
+                width: 100% !important;
+            }
+
+            .nav-link {
+                font-size: 14px !important;
+                padding: 8px 12px !important;
+                flex-shrink: 0;
+            }
+
+            nav > div:first-child {
+                font-size: 20px !important;
+            }
+
+            nav > div:last-child {
+                font-size: 12px !important;
+                padding: 6px 12px !important;
+            }
+
+            /* Make pages take full width on mobile */
+            .app-page > div {
+                padding: 15px 10px !important;
+            }
+
+            /* Mobile grid fixes */
+            .ratings-bar,
+            .stats-grid {
+                grid-template-columns: 1fr !important;
+                gap: 15px !important;
+            }
+
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Dashboard title */
+            h1 {
+                font-size: 24px !important;
+            }
+
+            /* Streak badge mobile */
+            .streak-badge {
+                flex-direction: column !important;
+                text-align: center !important;
+                padding: 20px !important;
+            }
+
+            .streak-info {
+                flex-direction: column !important;
+                text-align: center !important;
+            }
+
+            .streak-number {
+                font-size: 48px !important;
+                margin-top: 15px !important;
+            }
         }
 
         /* App Pages */
@@ -1184,11 +1269,21 @@
         }
 
         .card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            margin-bottom: 20px;
+            background: var(--card-white);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            margin-bottom: 24px;
+            transition: all 0.2s;
+        }
+
+        .clickable-card {
+            cursor: pointer;
+        }
+
+        .clickable-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.08);
         }
 
         .grid-2 {
@@ -1203,34 +1298,75 @@
             gap: 20px;
         }
 
-        .btn {
-            padding: 12px 24px;
+        /* ==================== PREMIUM BUTTON SYSTEM ==================== */
+        .btn-primary-big {
+            background: var(--primary-blue);
+            color: white;
+            padding: 14px 22px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
             border: none;
-            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .btn-primary-big:hover {
+            background: #2F4BB3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(59, 91, 219, 0.25);
+        }
+
+        .btn-secondary-big {
+            background: white;
+            color: var(--primary-blue);
+            padding: 14px 22px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            border: 1px solid var(--primary-blue);
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .btn-secondary-big:hover {
+            background: var(--light-blue-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
+
+        .btn {
+            padding: 14px 22px;
+            border: none;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
 
         .btn-primary {
-            background: #5B5FC7;
+            background: var(--primary-blue);
             color: white;
         }
 
         .btn-primary:hover {
-            background: #4C51BF;
+            background: #2F4BB3;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(91, 95, 199, 0.3);
+            box-shadow: 0 6px 16px rgba(59, 91, 219, 0.25);
         }
 
         .btn-secondary {
-            background: #E2E8F0;
-            color: #2D3748;
+            background: white;
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
         }
 
         .btn-secondary:hover {
-            background: #CBD5E0;
+            background: var(--light-blue-bg);
+            transform: translateY(-2px);
         }
 
         /* XP Progress Bar */
@@ -1343,11 +1479,11 @@
     <!-- ==================== MAIN APP (Multi-Page Structure) ==================== -->
     <div id="mainApp" class="hidden">
         <!-- Top Navigation Bar -->
-        <nav style="background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;">
-            <div style="font-size: 24px; font-weight: bold; color: #5B5FC7; display: flex; align-items: center; gap: 10px;">
-                <span>♟️</span> Chess Masters
+        <nav style="background: var(--card-white); border-bottom: 1px solid var(--border); padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;">
+            <div style="font-size: 22px; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 28px;">♟️</span> Chess Masters
             </div>
-            <div style="display: flex; gap: 25px; align-items: center;">
+            <div style="display: flex; gap: 30px; align-items: center;">
                 <a class="nav-link active" onclick="switchPage('dashboard')">Dashboard</a>
                 <a class="nav-link" onclick="switchPage('play')">Play Bots</a>
                 <a class="nav-link" onclick="switchPage('friends')">Friends</a>
@@ -1355,66 +1491,221 @@
                 <a class="nav-link" onclick="switchPage('achievements')">Achievements</a>
                 <a class="nav-link" onclick="logout()">Logout</a>
             </div>
-            <div style="display: flex; align-items: center; gap: 10px; padding: 8px 16px; background: #F7FAFC; border-radius: 8px;">
-                <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #5B5FC7, #7C3AED); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">👤</div>
+            <div style="display: flex; align-items: center; gap: 10px; padding: 8px 16px; background: var(--page-bg); border-radius: 10px;">
+                <div style="width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary-blue), #5B82F0); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">👤</div>
                 <div>
-                    <div style="font-weight: bold; font-size: 14px;" id="navUsername">Player</div>
-                    <div style="font-size: 11px; color: #718096;" id="navLevel">Level 1</div>
+                    <div style="font-weight: 600; font-size: 14px; color: var(--text-dark);" id="navUsername">Player</div>
+                    <div style="font-size: 11px; color: var(--text-light);" id="navLevel">Level 1</div>
                 </div>
             </div>
         </nav>
 
         <!-- Dashboard Page -->
         <div class="app-page active" id="dashboardPage">
-            <div style="max-width: 1400px; margin: 0 auto; padding: 30px 20px;">
-                <h1 style="font-size: 32px; font-weight: bold; color: #1A202C; margin-bottom: 10px;">Dashboard</h1>
-                <p style="color: #718096; font-size: 16px; margin-bottom: 30px;">Welcome back! Ready to play?</p>
+            <div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+                <!-- PAGE TITLE -->
+                <h1 style="font-size: 36px; font-weight: 800; color: var(--text-dark); margin-bottom: 8px;">Dashboard</h1>
+                <p style="font-size: 16px; color: var(--text-light); margin-bottom: 40px;">Welcome back! Ready for your next game?</p>
 
-                <div class="streak-badge" id="streakBadge">
-                    <div class="streak-info">
-                        <div class="streak-icon">🔥</div>
-                        <div class="streak-text">
-                            <h3>Daily Streak</h3>
-                            <p id="streakMessage">Keep logging in daily!</p>
+                <!-- HERO CARD - PRIMARY ACTION AREA (FIX 1,6) -->
+                <div style="background: var(--light-blue-bg); border: 1px solid var(--border); padding: 40px; border-radius: 20px; text-align: center; margin-bottom: 48px; box-shadow: 0 8px 24px rgba(0,0,0,0.04);">
+                    <h2 style="font-size: 28px; font-weight: 700; color: var(--text-dark); margin-bottom: 24px;">Start Playing</h2>
+                    <div style="display: flex; gap: 16px; justify-content: center; max-width: 500px; margin: 0 auto 16px;">
+                        <button class="btn-primary-big" onclick="switchPage('play')" style="flex: 1;">
+                            🤖 Play vs Bot
+                        </button>
+                        <button class="btn-secondary-big" onclick="switchPage('friends')" style="flex: 1;">
+                            👥 Play vs Friend
+                        </button>
+                    </div>
+                    <a href="#" onclick="alert('Analyze Game feature coming soon!')" style="color: var(--text-light); font-size: 14px; text-decoration: none; cursor: pointer;">📊 Analyze Game</a>
+                </div>
+
+                <!-- SECTION: YOUR RATINGS (FIX 5,7) -->
+                <div style="margin-top: 48px; margin-bottom: 48px;">
+                    <h3 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 16px;">Your Ratings</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                        <div class="card" style="text-align: center; padding: 24px;">
+                            <div style="font-size: 11px; color: var(--text-light); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">⚡ BULLET</div>
+                            <div style="font-size: 40px; font-weight: 700; color: var(--primary-blue);" id="bulletRating">1200</div>
+                            <div class="rating-change" id="bulletChange"></div>
+                        </div>
+                        <div class="card" style="text-align: center; padding: 24px;">
+                            <div style="font-size: 11px; color: var(--text-light); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">🔥 BLITZ</div>
+                            <div style="font-size: 40px; font-weight: 700; color: var(--primary-blue);" id="blitzRating">1200</div>
+                            <div class="rating-change" id="blitzChange"></div>
+                        </div>
+                        <div class="card" style="text-align: center; padding: 24px;">
+                            <div style="font-size: 11px; color: var(--text-light); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">🐢 RAPID</div>
+                            <div style="font-size: 40px; font-weight: 700; color: var(--primary-blue);" id="rapidRating">1200</div>
+                            <div class="rating-change" id="rapidChange"></div>
                         </div>
                     </div>
-                    <div class="streak-number" id="streakNumber">0</div>
                 </div>
 
-                <div class="ratings-bar">
-                    <div class="rating-card">
-                        <div class="rating-type">⚡ Bullet</div>
-                        <div class="rating-value" id="bulletRating">1200</div>
-                        <div class="rating-change" id="bulletChange"></div>
+                <!-- DAILY STREAK - HIGHLIGHT (FIX 5) -->
+                <div class="card" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; margin-top: 48px; margin-bottom: 48px; background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%); border: 1px solid #86EFAC;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="font-size: 28px;">🔥</div>
+                        <div>
+                            <div style="font-size: 15px; font-weight: 600; color: var(--text-dark);">Daily Streak</div>
+                            <div style="font-size: 13px; color: var(--text-light);" id="streakMessage">Keep it up!</div>
+                        </div>
                     </div>
-                    <div class="rating-card">
-                        <div class="rating-type">🔥 Blitz</div>
-                        <div class="rating-value" id="blitzRating">1200</div>
-                        <div class="rating-change" id="blitzChange"></div>
-                    </div>
-                    <div class="rating-card">
-                        <div class="rating-type">🐢 Rapid</div>
-                        <div class="rating-value" id="rapidRating">1200</div>
-                        <div class="rating-change" id="rapidChange"></div>
+                    <div style="font-size: 32px; font-weight: 700; color: var(--success-green);" id="streakNumber">0</div>
+                </div>
+
+                <!-- SECTION: STATISTICS (FIX 5) -->
+                <div style="margin-top: 48px; margin-bottom: 48px;">
+                    <h3 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 16px;">Statistics</h3>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+                        <div class="card" style="text-align: center; padding: 24px;">
+                            <div style="font-size: 32px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px;" id="totalGamesDisplay">0</div>
+                            <div style="color: var(--text-light); font-size: 13px;">Games Played</div>
+                        </div>
+                        <div class="card" style="text-align: center; padding: 24px;">
+                            <div style="font-size: 32px; font-weight: 700; color: var(--success-green); margin-bottom: 4px;" id="winsDisplay">0</div>
+                            <div style="color: var(--text-light); font-size: 13px;">Wins</div>
+                        </div>
+                        <div class="card" style="text-align: center; padding: 24px;">
+                            <div style="font-size: 32px; font-weight: 700; color: var(--primary-blue); margin-bottom: 4px;" id="levelDisplay">1</div>
+                            <div style="color: var(--text-light); font-size: 13px;">Level</div>
+                        </div>
+                        <div class="card" style="text-align: center; padding: 24px;">
+                            <div style="font-size: 32px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px;" id="xpDisplay">0</div>
+                            <div style="color: var(--text-light); font-size: 13px;">XP</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number" id="totalGamesDisplay">0</div>
-                        <div class="stat-label">Games Played</div>
+                <!-- SECTION: FEATURES (FIX 5,8) -->
+                <div style="margin-top: 48px;">
+                    <h3 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 16px;">Features</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                        <div class="card clickable-card" onclick="switchPage('play')" style="padding: 24px; text-align: center;">
+                            <div style="font-size: 40px; margin-bottom: 12px;">🤖</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px;">Play Bots</h4>
+                            <p style="font-size: 13px; color: var(--text-light);">Challenge AI • 12 levels</p>
+                        </div>
+                        <div class="card clickable-card" onclick="switchPage('friends')" style="padding: 24px; text-align: center;">
+                            <div style="font-size: 40px; margin-bottom: 12px;">👥</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px;">Friends</h4>
+                            <p style="font-size: 13px; color: var(--text-light);">Add & challenge friends</p>
+                        </div>
+                        <div class="card clickable-card" onclick="switchPage('profile')" style="padding: 24px; text-align: center;">
+                            <div style="font-size: 40px; margin-bottom: 12px;">👤</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px;">Profile</h4>
+                            <p style="font-size: 13px; color: var(--text-light);">View your stats</p>
+                        </div>
+                        <div class="card clickable-card" onclick="switchPage('achievements')" style="padding: 24px; text-align: center;">
+                            <div style="font-size: 40px; margin-bottom: 12px;">🏆</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px;">Achievements</h4>
+                            <p style="font-size: 13px; color: var(--text-light);">Track your progress</p>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number" style="color: #48BB78;" id="winsDisplay">0</div>
-                        <div class="stat-label">Wins</div>
+                </div>
+            </div>
+        </div>
+            <div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+                <!-- PAGE TITLE -->
+                <h1 style="font-size: 36px; font-weight: 800; color: var(--navy); margin-bottom: 8px;">Dashboard</h1>
+                <p style="font-size: 16px; color: #718096; margin-bottom: 40px;">Welcome back! Ready for your next game?</p>
+
+                <!-- PRIMARY ACTION AREA - HUGE FOCUS -->
+                <div class="card" style="text-align: center; padding: 48px 40px; margin-bottom: 40px; box-shadow: 0 12px 28px rgba(0,0,0,0.08);">
+                    <h2 style="font-size: 28px; font-weight: 700; color: var(--navy); margin-bottom: 24px;">Start Playing</h2>
+                    <div style="display: flex; gap: 16px; justify-content: center; max-width: 500px; margin: 0 auto 16px;">
+                        <button class="btn-primary-big" onclick="switchPage('play')" style="flex: 1;">
+                            🤖 Play vs Bot
+                        </button>
+                        <button class="btn-secondary-big" onclick="switchPage('friends')" style="flex: 1;">
+                            👥 Play vs Friend
+                        </button>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="levelDisplay">1</div>
-                        <div class="stat-label">Level</div>
+                    <a href="#" style="color: #718096; font-size: 14px; text-decoration: none;">📊 Analyze Game</a>
+                </div>
+
+                <!-- SECTION: YOUR RATINGS -->
+                <div style="margin-bottom: 40px;">
+                    <h3 style="font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 16px;">Your Ratings</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                        <div class="card" style="text-align: center; padding: 24px 16px;">
+                            <div style="font-size: 13px; color: #718096; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">⚡ Bullet</div>
+                            <div style="font-size: 40px; font-weight: 700; color: var(--royal-blue);" id="bulletRating">1200</div>
+                            <div class="rating-change" id="bulletChange"></div>
+                        </div>
+                        <div class="card" style="text-align: center; padding: 24px 16px;">
+                            <div style="font-size: 13px; color: #718096; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">🔥 Blitz</div>
+                            <div style="font-size: 40px; font-weight: 700; color: var(--royal-blue);" id="blitzRating">1200</div>
+                            <div class="rating-change" id="blitzChange"></div>
+                        </div>
+                        <div class="card" style="text-align: center; padding: 24px 16px;">
+                            <div style="font-size: 13px; color: #718096; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">🐢 Rapid</div>
+                            <div style="font-size: 40px; font-weight: 700; color: var(--royal-blue);" id="rapidRating">1200</div>
+                            <div class="rating-change" id="rapidChange"></div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="xpDisplay">0</div>
-                        <div class="stat-label">XP</div>
+                </div>
+
+                <!-- DAILY STREAK - THIN BAR -->
+                <div class="card" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; margin-bottom: 40px; height: 70px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="font-size: 28px;">🔥</div>
+                        <div>
+                            <div style="font-size: 15px; font-weight: 600; color: var(--navy);">Daily Streak</div>
+                            <div style="font-size: 13px; color: #718096;" id="streakMessage">Keep it up!</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 32px; font-weight: 700; color: #48BB78;" id="streakNumber">0</div>
+                </div>
+
+                <!-- SECTION: STATISTICS -->
+                <div style="margin-bottom: 40px;">
+                    <h3 style="font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 16px;">Statistics</h3>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+                        <div class="card" style="text-align: center; padding: 16px;">
+                            <div style="font-size: 32px; font-weight: 700; color: var(--navy); margin-bottom: 4px;" id="totalGamesDisplay">0</div>
+                            <div style="color: #718096; font-size: 13px;">Games Played</div>
+                        </div>
+                        <div class="card" style="text-align: center; padding: 16px;">
+                            <div style="font-size: 32px; font-weight: 700; color: #48BB78; margin-bottom: 4px;" id="winsDisplay">0</div>
+                            <div style="color: #718096; font-size: 13px;">Wins</div>
+                        </div>
+                        <div class="card" style="text-align: center; padding: 16px;">
+                            <div style="font-size: 32px; font-weight: 700; color: var(--royal-blue); margin-bottom: 4px;" id="levelDisplay">1</div>
+                            <div style="color: #718096; font-size: 13px;">Level</div>
+                        </div>
+                        <div class="card" style="text-align: center; padding: 16px;">
+                            <div style="font-size: 32px; font-weight: 700; color: var(--navy); margin-bottom: 4px;" id="xpDisplay">0</div>
+                            <div style="color: #718096; font-size: 13px;">XP</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION: FEATURES -->
+                <div>
+                    <h3 style="font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 16px;">Features</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                        <div class="card clickable-card" onclick="switchPage('play')" style="padding: 24px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                            <div style="font-size: 40px; margin-bottom: 12px;">🤖</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 6px;">Play Bots</h4>
+                            <p style="font-size: 13px; color: #718096;">Challenge AI • 12 levels</p>
+                        </div>
+                        <div class="card clickable-card" onclick="switchPage('friends')" style="padding: 24px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                            <div style="font-size: 40px; margin-bottom: 12px;">👥</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 6px;">Friends</h4>
+                            <p style="font-size: 13px; color: #718096;">Add & challenge friends</p>
+                        </div>
+                        <div class="card clickable-card" onclick="switchPage('profile')" style="padding: 24px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                            <div style="font-size: 40px; margin-bottom: 12px;">👤</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 6px;">Profile</h4>
+                            <p style="font-size: 13px; color: #718096;">View your stats</p>
+                        </div>
+                        <div class="card clickable-card" onclick="switchPage('achievements')" style="padding: 24px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                            <div style="font-size: 40px; margin-bottom: 12px;">🏆</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 6px;">Achievements</h4>
+                            <p style="font-size: 13px; color: #718096;">Track your progress</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1422,15 +1713,12 @@
 
         <!-- Play Bots Page -->
         <div class="app-page" id="playPage">
-            <div style="max-width: 1400px; margin: 0 auto; padding: 30px 20px;">
+            <div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
                 <div id="botSelection">
-                    <h1 style="font-size: 32px; font-weight: bold; color: #1A202C; margin-bottom: 10px;">Play vs Computer</h1>
-                    <p style="color: #718096; font-size: 16px; margin-bottom: 30px;">Choose your opponent</p>
+                    <h1 style="font-size: 36px; font-weight: 800; color: var(--navy); margin-bottom: 8px;">Choose Your Challenge</h1>
+                    <p style="color: #718096; font-size: 16px; margin-bottom: 40px;">Select an opponent and test your skills</p>
 
-                    <div class="card">
-                        <h3 style="margin-bottom: 20px; color: #2D3748;">Select Bot Difficulty</h3>
-                        <div class="bot-list" id="botList"></div>
-                    </div>
+                    <div class="bot-list" id="botList"></div>
                 </div>
 
                 <!-- Active Game (shown when game starts) -->
@@ -2053,8 +2341,13 @@
             if (confirm('Are you sure you want to logout?')) {
                 currentUser = null;
                 saveData();
-                document.getElementById('homeScreen').style.display = 'none';
-                document.getElementById('loginScreen').style.display = 'flex';
+                const mainApp = document.getElementById('mainApp');
+                const loginScreen = document.getElementById('loginScreen');
+                if (mainApp) mainApp.classList.add('hidden');
+                if (loginScreen) {
+                    loginScreen.classList.remove('hidden');
+                    loginScreen.style.display = 'flex';
+                }
             }
         }
 
@@ -2130,32 +2423,33 @@
                 
                 const card = document.createElement('div');
                 card.style.cssText = `
-                    background: white;
+                    background: ${unlocked ? 'white' : '#F5F7FB'};
                     border-radius: 12px;
                     padding: 20px;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-                    transition: all 0.3s;
+                    box-shadow: ${unlocked ? '0 8px 20px rgba(0,0,0,0.08)' : '0 4px 12px rgba(0,0,0,0.04)'};
+                    transition: all 0.2s;
                     text-align: center;
                     position: relative;
-                    ${unlocked ? 'border: 2px solid #48BB78;' : 'opacity: 0.6; filter: grayscale(0.8);'}
+                    ${unlocked ? 'border: 2px solid #48BB78;' : 'border: 1px solid #E2E8F0;'}
+                    cursor: ${unlocked ? 'pointer' : 'default'};
                 `;
                 
                 card.innerHTML = `
-                    ${unlocked ? '<div style="position: absolute; top: 10px; right: 10px; background: #F59E0B; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ UNLOCKED</div>' : ''}
-                    <div style="font-size: 48px; margin-bottom: 15px;">${ach.icon}</div>
-                    <div style="font-size: 18px; font-weight: bold; color: #2D3748; margin-bottom: 8px;">${ach.name}</div>
-                    <div style="font-size: 13px; color: #718096;">${ach.desc}</div>
+                    ${unlocked ? '<div style="position: absolute; top: 10px; right: 10px; background: #48BB78; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">✓ UNLOCKED</div>' : ''}
+                    <div style="font-size: 48px; margin-bottom: 15px; ${!unlocked ? 'filter: grayscale(1); opacity: 0.5;' : ''}">${ach.icon}</div>
+                    <div style="font-size: 18px; font-weight: 600; color: ${unlocked ? 'var(--navy)' : '#9CA3AF'}; margin-bottom: 8px;">${ach.name}</div>
+                    <div style="font-size: 13px; color: ${unlocked ? '#718096' : '#9CA3AF'};">${ach.desc}</div>
                 `;
                 
                 card.onmouseover = () => {
                     if (unlocked) {
-                        card.style.transform = 'translateY(-5px)';
-                        card.style.boxShadow = '0 8px 20px rgba(0,0,0,0.15)';
+                        card.style.transform = 'translateY(-6px)';
+                        card.style.boxShadow = '0 12px 24px rgba(0,0,0,0.12)';
                     }
                 };
                 card.onmouseout = () => {
                     card.style.transform = 'translateY(0)';
-                    card.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+                    card.style.boxShadow = unlocked ? '0 8px 20px rgba(0,0,0,0.08)' : '0 4px 12px rgba(0,0,0,0.04)';
                 };
                 
                 grid.appendChild(card);
@@ -2666,20 +2960,38 @@
             const botList = document.getElementById('botList');
             botList.innerHTML = '';
             botList.style.display = 'grid';
-            botList.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
-            botList.style.gap = '15px';
+            botList.style.gridTemplateColumns = 'repeat(auto-fill, minmax(220px, 1fr))';
+            botList.style.gap = '16px';
             
-            bots.forEach(bot => {
+            bots.forEach((bot, index) => {
                 const card = document.createElement('div');
-                card.style.cssText = 'background: white; padding: 20px; border-radius: 12px; cursor: pointer; transition: all 0.3s; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08);';
-                card.innerHTML = `
-                    <div style="font-size: 40px; margin-bottom: 10px;">🤖</div>
-                    <div style="font-weight: bold; margin-bottom: 5px; color: #2D3748;">${bot.name}</div>
-                    <div style="font-size: 24px; font-weight: bold; color: #5B5FC7; margin: 10px 0;">${bot.rating}</div>
-                    <div style="font-size: 13px; color: #718096;">Level ${bot.level}</div>
+                // Visual progression - cards get more premium looking as rating increases
+                const shadowDepth = 4 + (index * 0.5);
+                card.style.cssText = `
+                    background: white;
+                    padding: 20px;
+                    border-radius: 12px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    text-align: center;
+                    box-shadow: 0 ${shadowDepth}px ${shadowDepth * 2}px rgba(0,0,0,0.06);
+                    border: 1px solid ${index >= 9 ? '#F59E0B' : '#E5E7EB'};
                 `;
-                card.onmouseover = () => card.style.transform = 'translateY(-5px)';
-                card.onmouseout = () => card.style.transform = 'translateY(0)';
+                card.innerHTML = `
+                    ${index >= 9 ? '<div style="background: linear-gradient(135deg, #F59E0B, #EF4444); color: white; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 8px; display: inline-block; margin-bottom: 8px;">ELITE</div>' : ''}
+                    <div style="font-size: 36px; margin-bottom: 10px;">${index >= 9 ? '👑' : '🤖'}</div>
+                    <div style="font-weight: 600; margin-bottom: 5px; color: var(--navy); font-size: 16px;">${bot.name}</div>
+                    <div style="font-size: 28px; font-weight: 700; color: var(--royal-blue); margin: 10px 0;">${bot.rating}</div>
+                    <div style="font-size: 12px; color: #718096; font-weight: 500;">LEVEL ${bot.level}</div>
+                `;
+                card.onmouseover = () => {
+                    card.style.transform = 'translateY(-6px)';
+                    card.style.boxShadow = `0 ${shadowDepth * 2}px ${shadowDepth * 4}px rgba(0,0,0,0.12)`;
+                };
+                card.onmouseout = () => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.boxShadow = `0 ${shadowDepth}px ${shadowDepth * 2}px rgba(0,0,0,0.06)`;
+                };
                 card.onclick = () => startBotGame(bot);
                 botList.appendChild(card);
             });
@@ -2703,8 +3015,9 @@
         }
 
         function hideBotSelection() {
-            document.getElementById('botSelection').style.display = 'none';
-            document.getElementById('mainMenu').style.display = 'grid';
+            const botSelection = document.getElementById('botSelection');
+            if (botSelection) botSelection.style.display = 'none';
+            switchPage('dashboard');
         }
 
         // ============== CHESS ENGINE ==============
@@ -3645,20 +3958,24 @@
             currentBot = bot;
             gameMode = 'bot';
             
-            document.getElementById('homeScreen').style.display = 'none';
-            document.getElementById('gameScreen').style.display = 'block';
+            const botSelection = document.getElementById('botSelection');
+            const gameScreen = document.getElementById('gameScreen');
+            if (botSelection) botSelection.style.display = 'none';
+            if (gameScreen) gameScreen.style.display = 'block';
             
-            document.getElementById('opponentName').textContent = bot.name + ' (' + bot.rating + ')';
-            document.getElementById('playerName').textContent = currentUser.username;
+            const opponentName = document.getElementById('opponentName');
+            const playerName = document.getElementById('playerName');
+            if (opponentName) opponentName.textContent = bot.name + ' (' + bot.rating + ')';
+            if (playerName) playerName.textContent = currentUser.username;
             
             initBoard();
             renderBoard();
         }
 
         function exitGame() {
-            document.getElementById('gameScreen').style.display = 'none';
-            document.getElementById('homeScreen').style.display = 'block';
-            hideBotSelection();
+            const gameScreen = document.getElementById('gameScreen');
+            if (gameScreen) gameScreen.style.display = 'none';
+            switchPage('dashboard');
             updateHomeDashboard();
             currentBot = null;
             gameMode = null;
