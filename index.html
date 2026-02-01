@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>♟️ Chess Masters - Professional Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ==================== PROFESSIONAL COLOR SYSTEM ==================== */
+        /* ==================== PERFECT COLOR SYSTEM ==================== */
         :root {
-            --primary-blue: #3B5BDB;
-            --light-blue-bg: #F5F7FF;
+            --primary-blue: #2563EB;
+            --text-dark: #0F172A;
+            --text-light: #64748B;
             --card-white: #FFFFFF;
-            --text-dark: #1F2937;
-            --text-light: #6B7280;
-            --success-green: #22C55E;
-            --border: #E5E7EB;
-            --page-bg: #F9FAFB;
+            --border: #E2E8F0;
+            --success-green: #16A34A;
+            --page-bg: #F8FAFC;
         }
 
         * {
@@ -24,10 +24,12 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            margin: 0;
+            font-family: 'Inter', sans-serif;
             background: var(--page-bg);
+            color: var(--text-dark);
             min-height: 100vh;
-            overflow-x: hidden;
+        }
             color: var(--text-dark);
         }
 
@@ -1052,27 +1054,25 @@
             display: none !important;
         }
 
-        /* Multi-page Navigation */
+        /* Perfect Navbar */
         .nav-link {
+            margin: 0 18px;
+            color: var(--text-light);
             text-decoration: none;
-            color: var(--text-dark);
             font-weight: 600;
-            padding: 10px 18px;
-            border-radius: 8px;
+            padding-bottom: 6px;
             transition: all 0.2s;
             cursor: pointer;
             display: inline-block;
-            white-space: nowrap;
         }
 
         .nav-link:hover {
-            background: var(--light-blue-bg);
             color: var(--primary-blue);
         }
 
         .nav-link.active {
-            background: var(--primary-blue);
-            color: white;
+            color: var(--primary-blue) !important;
+            border-bottom: 2px solid var(--primary-blue);
         }
 
         /* Mobile Navigation Fix */
@@ -1268,42 +1268,170 @@
             font-weight: bold;
         }
 
+        /* ==================== UNIVERSAL CARD SYSTEM ==================== */
         .card {
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
             background: var(--card-white);
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
             margin-bottom: 24px;
-            transition: all 0.2s;
+        }
+
+        .hero-card {
+            background: #F8FAFC;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+
+        .rating-card {
+            background: var(--card-white);
+            padding: 32px;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+            flex: 1;
+            border-top: 4px solid #2563EB;
+        }
+
+        .rating-title {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .rating-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2563EB;
+        }
+
+        .strip-blue { border-top: 4px solid #2563EB; }
+        .strip-green { border-top: 4px solid #2563EB; }
+        .strip-purple { border-top: 4px solid #2563EB; }
+
+        .streak-card {
+            background: #EFF6FF;
+            border-left: 6px solid #2563EB;
+            padding: 28px;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .streak-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2563EB;
+        }
+
+        .stat-card {
+            background: var(--card-white);
+            padding: 28px;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .feature-card {
+            background: var(--card-white);
+            padding: 36px;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .icon-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #EFF6FF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px auto;
+            font-size: 28px;
         }
 
         .clickable-card {
             cursor: pointer;
+            transition: 0.2s;
         }
 
         .clickable-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+            transform: translateY(-6px);
         }
 
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+        /* Section Spacing - BIG VERTICAL GAPS */
+        .section {
+            margin-top: 60px;
         }
 
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+        /* ==================== PERFECT BUTTON SYSTEM ==================== */
+        button {
+            border-radius: 10px;
         }
 
-        /* ==================== PREMIUM BUTTON SYSTEM ==================== */
-        .btn-primary-big {
-            background: var(--primary-blue);
+        .btn-primary {
+            background: #2563EB;
             color: white;
-            padding: 14px 22px;
-            border-radius: 12px;
+            padding: 14px 36px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #1D4ED8;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-outline {
+            background: white;
+            color: #2563EB;
+            padding: 14px 36px;
+            border: 2px solid #2563EB;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: #EFF6FF;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary-big {
+            background: #2563EB;
+            color: white;
+            padding: 14px 36px;
+            border-radius: 10px;
             font-weight: 600;
             font-size: 16px;
             border: none;
@@ -1313,59 +1441,26 @@
         }
 
         .btn-primary-big:hover {
-            background: #2F4BB3;
+            background: #1D4ED8;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(59, 91, 219, 0.25);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
         }
 
         .btn-secondary-big {
             background: white;
-            color: var(--primary-blue);
-            padding: 14px 22px;
-            border-radius: 12px;
+            color: #2563EB;
+            padding: 14px 36px;
+            border: 2px solid #2563EB;
+            border-radius: 10px;
             font-weight: 600;
             font-size: 16px;
-            border: 1px solid var(--primary-blue);
             cursor: pointer;
             transition: all 0.2s;
             width: 100%;
         }
 
         .btn-secondary-big:hover {
-            background: var(--light-blue-bg);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-        }
-
-        .btn {
-            padding: 14px 22px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-primary {
-            background: var(--primary-blue);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #2F4BB3;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(59, 91, 219, 0.25);
-        }
-
-        .btn-secondary {
-            background: white;
-            color: var(--primary-blue);
-            border: 1px solid var(--primary-blue);
-        }
-
-        .btn-secondary:hover {
-            background: var(--light-blue-bg);
+            background: #EFF6FF;
             transform: translateY(-2px);
         }
 
@@ -1479,11 +1574,11 @@
     <!-- ==================== MAIN APP (Multi-Page Structure) ==================== -->
     <div id="mainApp" class="hidden">
         <!-- Top Navigation Bar -->
-        <nav style="background: var(--card-white); border-bottom: 1px solid var(--border); padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;">
+        <nav style="height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; background: var(--card-white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100;">
             <div style="font-size: 22px; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 10px;">
                 <span style="font-size: 28px;">♟️</span> Chess Masters
             </div>
-            <div style="display: flex; gap: 30px; align-items: center;">
+            <div style="display: flex; gap: 18px; align-items: center;">
                 <a class="nav-link active" onclick="switchPage('dashboard')">Dashboard</a>
                 <a class="nav-link" onclick="switchPage('play')">Play Bots</a>
                 <a class="nav-link" onclick="switchPage('friends')">Friends</a>
@@ -1492,7 +1587,7 @@
                 <a class="nav-link" onclick="logout()">Logout</a>
             </div>
             <div style="display: flex; align-items: center; gap: 10px; padding: 8px 16px; background: var(--page-bg); border-radius: 10px;">
-                <div style="width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary-blue), #5B82F0); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">👤</div>
+                <div style="width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary-blue), #60A5FA); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">👤</div>
                 <div>
                     <div style="font-weight: 600; font-size: 14px; color: var(--text-dark);" id="navUsername">Player</div>
                     <div style="font-size: 11px; color: var(--text-light);" id="navLevel">Level 1</div>
@@ -1502,6 +1597,218 @@
 
         <!-- Dashboard Page -->
         <div class="app-page active" id="dashboardPage">
+            <div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+                <!-- PAGE TITLE - 32px/700 -->
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px;">Dashboard</h1>
+                <p style="font-size: 14px; font-weight: 400; color: var(--text-light); margin-bottom: 40px;">Welcome back! Ready for your next game?</p>
+
+                <!-- HERO CARD -->
+                <div class="hero-card" style="margin-bottom: 60px;">
+                    <h2 style="font-size: 22px; font-weight: 600; margin-bottom: 28px; color: var(--text-dark);">Start Playing</h2>
+                    <div style="display: flex; gap: 28px; justify-content: center; max-width: 600px; margin: 0 auto;">
+                        <button class="btn-primary" onclick="switchPage('play')" style="flex: 1;">
+                            Play vs Bot
+                        </button>
+                        <button class="btn-outline" onclick="switchPage('friends')" style="flex: 1;">
+                            Play vs Friend
+                        </button>
+                    </div>
+                    <a href="#" onclick="alert('Analyze Game feature coming soon!'); return false;" style="display: inline-block; margin-top: 16px; color: var(--text-light); font-size: 14px; font-weight: 400; text-decoration: none;">Analyze Game</a>
+                </div>
+
+                <!-- RATINGS - Section title 22px/600 -->
+                <div class="section">
+                    <h3 style="font-size: 22px; font-weight: 600; color: var(--text-dark); margin-bottom: 28px;">Your Ratings</h3>
+                    <div style="display: flex; gap: 28px;">
+                        <div class="rating-card">
+                            <div class="rating-title">⚡ BULLET</div>
+                            <div class="rating-number" id="bulletRating">1200</div>
+                            <div class="rating-change" id="bulletChange" style="margin-top: 8px; font-size: 14px; font-weight: 600;"></div>
+                        </div>
+                        <div class="rating-card">
+                            <div class="rating-title">🔥 BLITZ</div>
+                            <div class="rating-number" id="blitzRating">1200</div>
+                            <div class="rating-change" id="blitzChange" style="margin-top: 8px; font-size: 14px; font-weight: 600;"></div>
+                        </div>
+                        <div class="rating-card">
+                            <div class="rating-title">🐢 RAPID</div>
+                            <div class="rating-number" id="rapidRating">1200</div>
+                            <div class="rating-change" id="rapidChange" style="margin-top: 8px; font-size: 14px; font-weight: 600;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DAILY STREAK - Soft blue -->
+                <div class="section">
+                    <div class="streak-card">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="font-size: 32px;">🔥</div>
+                            <div>
+                                <div style="font-size: 18px; font-weight: 600; color: var(--text-dark);">Daily Streak</div>
+                                <div style="font-size: 14px; font-weight: 400; color: var(--text-light); margin-top: 4px;" id="streakMessage">Keep it up!</div>
+                            </div>
+                        </div>
+                        <div class="streak-number" id="streakNumber">0</div>
+                    </div>
+                </div>
+
+                <!-- STATISTICS -->
+                <div class="section">
+                    <h3 style="font-size: 22px; font-weight: 600; color: var(--text-dark); margin-bottom: 28px;">Statistics</h3>
+                    <div style="display: flex; gap: 28px;">
+                        <div class="stat-card">
+                            <div class="stat-number" style="color: var(--text-dark);" id="totalGamesDisplay">0</div>
+                            <div class="stat-label">Games Played</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="color: #2563EB;" id="winsDisplay">0</div>
+                            <div class="stat-label">Wins</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="color: #2563EB;" id="levelDisplay">1</div>
+                            <div class="stat-label">Level</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="color: var(--text-dark);" id="xpDisplay">0</div>
+                            <div class="stat-label">XP</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FEATURES -->
+                <div class="section">
+                    <h3 style="font-size: 22px; font-weight: 600; color: var(--text-dark); margin-bottom: 28px;">Features</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px;">
+                        <div class="feature-card" onclick="switchPage('play')">
+                            <div class="icon-circle">🤖</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px;">Play Bots</h4>
+                            <p style="font-size: 14px; font-weight: 400; color: var(--text-light);">Challenge AI • 12 levels</p>
+                        </div>
+                        <div class="feature-card" onclick="switchPage('friends')">
+                            <div class="icon-circle">👥</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px;">Friends</h4>
+                            <p style="font-size: 14px; font-weight: 400; color: var(--text-light);">Add & challenge friends</p>
+                        </div>
+                        <div class="feature-card" onclick="switchPage('profile')">
+                            <div class="icon-circle">👤</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px;">Profile</h4>
+                            <p style="font-size: 14px; font-weight: 400; color: var(--text-light);">View your stats</p>
+                        </div>
+                        <div class="feature-card" onclick="switchPage('achievements')">
+                            <div class="icon-circle">🏆</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px;">Achievements</h4>
+                            <p style="font-size: 14px; font-weight: 400; color: var(--text-light);">Track your progress</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+                <!-- PAGE TITLE -->
+                <h1 style="font-size: 36px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px;">Dashboard</h1>
+                <p style="font-size: 16px; color: var(--text-light); margin-bottom: 40px;">Welcome back! Ready for your next game?</p>
+
+                <!-- HERO CARD (FIX 5) -->
+                <div class="hero-card" style="margin-bottom: 64px;">
+                    <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 24px; color: var(--text-dark);">Start Playing</h2>
+                    <div style="display: flex; gap: 24px; justify-content: center; max-width: 600px; margin: 0 auto;">
+                        <button class="btn-primary" onclick="switchPage('play')" style="flex: 1;">
+                            🤖 Play vs Bot
+                        </button>
+                        <button class="btn-outline" onclick="switchPage('friends')" style="flex: 1;">
+                            👥 Play vs Friend
+                        </button>
+                    </div>
+                    <a href="#" onclick="alert('Analyze Game feature coming soon!'); return false;" style="display: inline-block; margin-top: 16px; color: var(--text-light); font-size: 14px; text-decoration: none;">📊 Analyze Game</a>
+                </div>
+
+                <!-- RATINGS (FIX 6) -->
+                <div class="section">
+                    <h3 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 24px;">Your Ratings</h3>
+                    <div style="display: flex; gap: 24px;">
+                        <div class="rating-card strip-blue">
+                            <div class="rating-title">⚡ BULLET</div>
+                            <div class="rating-number" id="bulletRating">1200</div>
+                            <div class="rating-change" id="bulletChange" style="margin-top: 8px; font-size: 14px; font-weight: 600;"></div>
+                        </div>
+                        <div class="rating-card strip-green">
+                            <div class="rating-title">🔥 BLITZ</div>
+                            <div class="rating-number" id="blitzRating">1200</div>
+                            <div class="rating-change" id="blitzChange" style="margin-top: 8px; font-size: 14px; font-weight: 600;"></div>
+                        </div>
+                        <div class="rating-card strip-purple">
+                            <div class="rating-title">🐢 RAPID</div>
+                            <div class="rating-number" id="rapidRating">1200</div>
+                            <div class="rating-change" id="rapidChange" style="margin-top: 8px; font-size: 14px; font-weight: 600;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DAILY STREAK (FIX 7) -->
+                <div class="section">
+                    <div class="streak-card">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="font-size: 32px;">🔥</div>
+                            <div>
+                                <div style="font-size: 16px; font-weight: 600; color: var(--text-dark);">Daily Streak</div>
+                                <div style="font-size: 14px; color: var(--text-light); margin-top: 4px;" id="streakMessage">Keep it up!</div>
+                            </div>
+                        </div>
+                        <div class="streak-number" id="streakNumber">0</div>
+                    </div>
+                </div>
+
+                <!-- STATISTICS (FIX 8) -->
+                <div class="section">
+                    <h3 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 24px;">Statistics</h3>
+                    <div style="display: flex; gap: 24px;">
+                        <div class="stat-card">
+                            <div class="stat-number" style="color: var(--text-dark);" id="totalGamesDisplay">0</div>
+                            <div class="stat-label">Games Played</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="color: var(--success-green);" id="winsDisplay">0</div>
+                            <div class="stat-label">Wins</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="color: var(--primary-blue);" id="levelDisplay">1</div>
+                            <div class="stat-label">Level</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="color: var(--text-dark);" id="xpDisplay">0</div>
+                            <div class="stat-label">XP</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FEATURES (FIX 9) -->
+                <div class="section">
+                    <h3 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 24px;">Features</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+                        <div class="feature-card" onclick="switchPage('play')">
+                            <div class="icon-circle">🤖</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px;">Play Bots</h4>
+                            <p style="font-size: 14px; color: var(--text-light);">Challenge AI • 12 levels</p>
+                        </div>
+                        <div class="feature-card" onclick="switchPage('friends')">
+                            <div class="icon-circle">👥</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px;">Friends</h4>
+                            <p style="font-size: 14px; color: var(--text-light);">Add & challenge friends</p>
+                        </div>
+                        <div class="feature-card" onclick="switchPage('profile')">
+                            <div class="icon-circle">👤</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px;">Profile</h4>
+                            <p style="font-size: 14px; color: var(--text-light);">View your stats</p>
+                        </div>
+                        <div class="feature-card" onclick="switchPage('achievements')">
+                            <div class="icon-circle">🏆</div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px;">Achievements</h4>
+                            <p style="font-size: 14px; color: var(--text-light);">Track your progress</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
             <div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
                 <!-- PAGE TITLE -->
                 <h1 style="font-size: 36px; font-weight: 800; color: var(--text-dark); margin-bottom: 8px;">Dashboard</h1>
@@ -2542,8 +2849,11 @@
         }
 
         function showBotList() {
-            document.getElementById('botSelection').classList.remove('hidden');
-            document.getElementById('activeGame').classList.add('hidden');
+            const botSelection = document.getElementById('botSelection');
+            const activeGame = document.getElementById('activeGame');
+            if (botSelection) botSelection.classList.remove('hidden');
+            if (activeGame) activeGame.classList.add('hidden');
+            populateBotList();
         }
 
         function checkDailyStreak() {
