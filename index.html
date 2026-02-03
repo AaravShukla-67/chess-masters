@@ -4281,45 +4281,70 @@
         }
 
         function checkGameEnd() {
-            // Check for checkmate/stalemate
-            let hasLegalMoves = false;
-            for (let row = 0; row < 8 && !hasLegalMoves; row++) {
-                for (let col = 0; col < 8 && !hasLegalMoves; col++) {
-                    if (board[row][col]?.color === currentTurn) {
-                        if (getLegalMoves(row, col).length > 0) {
-                            hasLegalMoves = true;
+            try {
+                // Safety check
+                if (!board || gameOver) return;
+                
+                // Check for checkmate/stalemate
+                let hasLegalMoves = false;
+                for (let row = 0; row < 8 && !hasLegalMoves; row++) {
+                    for (let col = 0; col < 8 && !hasLegalMoves; col++) {
+                        if (board[row][col]?.color === currentTurn) {
+                            try {
+                                const moves = getLegalMoves(row, col);
+                                if (moves && moves.length > 0) {
+                                    hasLegalMoves = true;
+                                }
+                            } catch (e) {
+                                console.error('Error getting legal moves:', e);
+                            }
                         }
                     }
                 }
-            }
 
-            if (!hasLegalMoves) {
-                if (isInCheck(currentTurn)) {
-                    endGame(currentTurn === 'white' ? 'black' : 'white', 'checkmate');
-                } else {
-                    endGame('draw', 'stalemate');
+                if (!hasLegalMoves) {
+                    try {
+                        if (isInCheck(currentTurn)) {
+                            endGame(currentTurn === 'white' ? 'black' : 'white', 'checkmate');
+                        } else {
+                            endGame('draw', 'stalemate');
+                        }
+                    } catch (e) {
+                        console.error('Error in checkmate detection:', e);
+                        endGame('draw', 'game ended');
+                    }
+                    return;
                 }
-                return;
-            }
-            
-            // Check for 50-move rule
-            if (gameState.halfMoveClock >= 100) {
-                endGame('draw', '50-move rule');
-                return;
-            }
-            
-            // Check for threefold repetition
-            const currentPosition = getBoardFEN();
-            const repetitions = gameState.positionHistory.filter(pos => pos === currentPosition).length;
-            if (repetitions >= 3) {
-                endGame('draw', 'threefold repetition');
-                return;
-            }
-            
-            // Check for insufficient material
-            if (isInsufficientMaterial()) {
-                endGame('draw', 'insufficient material');
-                return;
+                
+                // Check for 50-move rule
+                if (gameState.halfMoveClock >= 100) {
+                    endGame('draw', '50-move rule');
+                    return;
+                }
+                
+                // Check for threefold repetition
+                try {
+                    const currentPosition = getBoardFEN();
+                    const repetitions = gameState.positionHistory.filter(pos => pos === currentPosition).length;
+                    if (repetitions >= 3) {
+                        endGame('draw', 'threefold repetition');
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Error in repetition check:', e);
+                }
+                
+                // Check for insufficient material
+                try {
+                    if (isInsufficientMaterial()) {
+                        endGame('draw', 'insufficient material');
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Error in material check:', e);
+                }
+            } catch (err) {
+                console.error('Critical error in checkGameEnd:', err);
             }
         }
         
@@ -4404,8 +4429,15 @@
             `;
             document.getElementById('gameOverModal').classList.add('show');
             
-            // Start game analysis
-            analyzeGame();
+            // Start game analysis with error handling
+            try {
+                analyzeGame().catch(err => {
+                    console.error('Analysis error:', err);
+                    document.getElementById('analysisContent').innerHTML = '<div style="text-align: center; padding: 20px; color: #64748B;">Analysis unavailable for this game.</div>';
+                });
+            } catch (err) {
+                console.error('Analysis initialization error:', err);
+            }
             
             saveData();
         }
@@ -4493,7 +4525,7 @@
         // REAL ANALYSIS - Chess.com Algorithm
         async function performRealAnalysis() {
             const moveList = gameMoveHistory;
-            if (moveList.length === 0) {
+            if (!moveList || moveList.length === 0) {
                 // Generate fake analysis for display
                 return generateFakeAnalysis();
             }
@@ -4509,11 +4541,14 @@
             const analyzedMoves = [];
 
             for (let i = 0; i < moveList.length; i++) {
-                const {fenBefore, move, san} = moveList[i];
-                
-                // STEP 1: Parse position before move
-                const stateBefore = chessEngine.parseFEN(fenBefore);
-                const isWhiteMove = stateBefore.side === 0;
+                try {
+                    const {fenBefore, move, san} = moveList[i];
+                    
+                    if (!fenBefore || !move) continue;
+                    
+                    // STEP 1: Parse position before move
+                    const stateBefore = chessEngine.parseFEN(fenBefore);
+                    const isWhiteMove = stateBefore.side === 0;
                 
                 // STEP 2: Get best move and eval (depth 18)
                 const bestResult = gameEngine.getBestMove(stateBefore, 18);
@@ -4565,6 +4600,10 @@
                 // Show progress every 5 moves
                 if (i % 5 === 0) {
                     await new Promise(resolve => setTimeout(resolve, 10));
+                }
+                } catch (err) {
+                    console.error('Error analyzing move', i, err);
+                    // Continue with next move
                 }
             }
             
